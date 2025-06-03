@@ -1,6 +1,10 @@
 package com.example.back_end.AiProfileChat.service;
 
-import com.example.back_end.AiProfileChat.dto.*;
+import com.example.back_end.AiProfileChat.dto.request.ChatDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatFilesDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatMultipartDTO;
+import com.example.back_end.AiProfileChat.dto.rest.AnalysisResponseDTO;
 
 import java.util.List;
 

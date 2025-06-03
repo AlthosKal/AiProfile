@@ -1,4 +1,4 @@
-package com.example.back_end.AiProfileChat.service;
+package com.example.back_end.AiProfileChat.service.functions;
 
 import com.example.back_end.AiProfileChat.connector.AiProfileAppConnector;
 import com.example.back_end.AiProfileChat.connector.rest.GetTransactionDTO;
@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import java.util.List;
 import java.util.function.Function;
 
-public class IncomesAndExpensesByPeriodFunction implements Function<IncomesAndExpensesByPeriodFunction.Request, ApiResponse<List<GetTransactionDTO>>> {
+public class BalanceOverTimeFunction implements Function<BalanceOverTimeFunction.Request, ApiResponse<List<GetTransactionDTO>>> {
 
-    @JsonClassDescription("Request for incomes and expenses by period")
+    @JsonClassDescription("Request for balance over time calculation")
     public record Request(
             @JsonProperty(required = true, value = "from")
             @JsonPropertyDescription("Start date in YYYY-MM-DD format")
@@ -23,17 +23,17 @@ public class IncomesAndExpensesByPeriodFunction implements Function<IncomesAndEx
             String to,
 
             @JsonProperty(required = true, value = "kind")
-            @JsonPropertyDescription("Type of data to retrieve: 'incomes' or 'expenses'")
+            @JsonPropertyDescription("Type of balance calculation: 'daily' or 'weekly'")
             String kind
     ) {}
     private final AiProfileAppConnector connector;
 
-    public IncomesAndExpensesByPeriodFunction(AiProfileAppConnector connector) {
+    public BalanceOverTimeFunction(AiProfileAppConnector connector) {
         this.connector = connector;
     }
 
     @Override
     public ApiResponse<List<GetTransactionDTO>> apply(Request request) {
-        return connector.incomesAndExpensesByPeriodFunction(request.from(), request.to(), request.kind());
+        return connector.balanceOverTimeFunction(request.from(), request.to(), request.kind());
     }
 }

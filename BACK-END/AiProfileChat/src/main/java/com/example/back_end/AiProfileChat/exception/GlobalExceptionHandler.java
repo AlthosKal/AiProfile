@@ -1,6 +1,6 @@
 package com.example.back_end.AiProfileChat.exception;
 
-import com.example.back_end.AiProfileChat.dto.ErrorDTO;
+import com.example.back_end.AiProfileChat.dto.request.ErrorDTO;
 import com.example.back_end.AiProfileChat.enums.ApiError;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

@@ -1,4 +1,4 @@
-package com.example.back_end.AiProfileChat.dto;
+package com.example.back_end.AiProfileChat.dto.request;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

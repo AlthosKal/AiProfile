@@ -1,8 +1,8 @@
 package com.example.back_end.AiProfileChat.configuration.ia;
 
 import com.example.back_end.AiProfileChat.connector.AiProfileAppConnector;
-import com.example.back_end.AiProfileChat.service.BalanceOverTimeFunction;
-import com.example.back_end.AiProfileChat.service.IncomesAndExpensesByPeriodFunction;
+import com.example.back_end.AiProfileChat.service.functions.BalanceOverTimeFunction;
+import com.example.back_end.AiProfileChat.service.functions.IncomesAndExpensesByPeriodFunction;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.ai.model.function.FunctionCallbackWrapper;
 import org.springframework.context.annotation.Bean;

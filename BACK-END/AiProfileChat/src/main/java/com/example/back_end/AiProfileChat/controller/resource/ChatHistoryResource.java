@@ -1,6 +1,6 @@
 package com.example.back_end.AiProfileChat.controller.resource;
 
-import com.example.back_end.AiProfileChat.dto.ChatHistoryDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,4 +1,4 @@
-package com.example.back_end.AiProfileChat.dto;
+package com.example.back_end.AiProfileChat.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

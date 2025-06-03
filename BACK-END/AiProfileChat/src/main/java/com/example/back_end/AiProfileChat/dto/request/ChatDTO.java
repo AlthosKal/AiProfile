@@ -1,4 +1,4 @@
-package com.example.back_end.AiProfileChat.dto;
+package com.example.back_end.AiProfileChat.dto.request;
 
 import com.example.back_end.AiProfileChat.enums.Model;
 import jakarta.validation.constraints.NotBlank;
@@ -15,4 +15,8 @@ public class ChatDTO {
 
     @NotBlank(message = "The prompt must be defined")
     private String prompt;
+
+    public boolean needsConversationId() {
+        return conversationId == null || conversationId.trim().isEmpty();
+    }
 }

@@ -1,13 +1,12 @@
 package com.example.back_end.AiProfileChat.controller;
 
 import com.example.back_end.AiProfileChat.controller.resource.ChatHistoryResource;
-import com.example.back_end.AiProfileChat.dto.ChatHistoryDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
 import com.example.back_end.AiProfileChat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,11 +1,14 @@
 package com.example.back_end.AiProfileChat.controller;
 
 import com.example.back_end.AiProfileChat.controller.resource.ChatResource;
-import com.example.back_end.AiProfileChat.dto.AnalysisResponseDTO;
-import com.example.back_end.AiProfileChat.dto.ChatDTO;
-import com.example.back_end.AiProfileChat.dto.ChatFilesDTO;
-import com.example.back_end.AiProfileChat.dto.ChatMultipartDTO;
+import com.example.back_end.AiProfileChat.dto.rest.AnalysisResponseDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatFilesDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatMultipartDTO;
+import com.example.back_end.AiProfileChat.dto.rest.ChatResponseDTO;
+import com.example.back_end.AiProfileChat.dto.rest.StringChatResponseDTO;
 import com.example.back_end.AiProfileChat.service.ChatService;
+import com.example.back_end.AiProfileChat.service.functions.ConversationIdService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,31 +24,48 @@ public class ChatController implements ChatResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatController.class);
 
     private final ChatService chatService;
+    private final ConversationIdService conversationIdService;
 
     @Override
     @PostMapping(value = "/chat")
-    public ResponseEntity<AnalysisResponseDTO> askAi(@RequestBody @Valid ChatDTO request) {
-        LOGGER.info("Processing the prompt with {}", request.toString());
+    public ResponseEntity<ChatResponseDTO> askAi(@RequestBody @Valid ChatDTO request) {
+        if (request.needsConversationId()) {
+            request.setConversationId(conversationIdService.generateConversationId());
+            LOGGER.info("Generated conversationId: {}", request.getConversationId());
+        }
 
-        AnalysisResponseDTO response = chatService.queryAi(request);
+        LOGGER.info("Processing the prompt with {}", request.toString());
+        AnalysisResponseDTO analysis = chatService.queryAi(request);
+
+        ChatResponseDTO response = new ChatResponseDTO(request.getConversationId(), analysis);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
     @PostMapping(value = "/chat-with-url")
-    public ResponseEntity<String> askAi(@RequestBody @Valid ChatFilesDTO request) {
+    public ResponseEntity<StringChatResponseDTO> askAi(@RequestBody @Valid ChatFilesDTO request) {
+        if (request.needsConversationId()) {
+            request.setConversationId(conversationIdService.generateConversationId());
+            LOGGER.info("Generated conversationId: {}", request.getConversationId());
+        }
         LOGGER.info("Processing the files with {}", request.toString());
+        String aiResponse = chatService.queryAi(request);
 
-        String response = chatService.queryAi(request);
+        StringChatResponseDTO response = new StringChatResponseDTO(request.getConversationId(), aiResponse);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
     @PostMapping(value = "/chat-with-file")
-    public ResponseEntity<String> askAi(@ModelAttribute @Valid ChatMultipartDTO request) {
+    public ResponseEntity<StringChatResponseDTO> askAi(@ModelAttribute @Valid ChatMultipartDTO request) {
+        if (request.needsConversationId()) {
+            request.setConversationId(conversationIdService.generateConversationId());
+            LOGGER.info("Generated conversationId: {}", request.getConversationId());
+        }
         LOGGER.info("Processing the file with {}", request.toString());
+        String aiResponse = chatService.queryAi(request);
 
-        String response = chatService.queryAi(request);
+        StringChatResponseDTO response = new StringChatResponseDTO(request.getConversationId(), aiResponse);
         return ResponseEntity.ok().body(response);
     }
 }

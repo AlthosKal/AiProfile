@@ -1,9 +1,8 @@
 package com.example.back_end.AiProfileChat.mapper;
 
-import com.example.back_end.AiProfileChat.dto.ChatHistoryDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
 import com.example.back_end.AiProfileChat.entity.ChatHistory;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ChatHistoryMapper {

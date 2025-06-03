@@ -1,6 +1,6 @@
 package com.example.back_end.AiProfileChat.configuration.security;
 
-import com.example.back_end.AiProfileChat.dto.CustomUserDetailsDTO;
+import com.example.back_end.AiProfileChat.dto.request.CustomUserDetailsDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

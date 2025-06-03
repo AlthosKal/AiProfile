@@ -20,11 +20,12 @@ public class ChatHistory {
     private String conversationId;
     private String prompt;
     private String response;
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     public ChatHistory(String conversationId, String prompt, String response) {
         this.conversationId = conversationId;
         this.prompt = prompt;
         this.response = response;
+        this.date = LocalDateTime.now();
     }
 }

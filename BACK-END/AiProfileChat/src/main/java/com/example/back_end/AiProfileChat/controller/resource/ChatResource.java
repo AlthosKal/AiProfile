@@ -1,6 +1,12 @@
 package com.example.back_end.AiProfileChat.controller.resource;
 
-import com.example.back_end.AiProfileChat.dto.*;
+import com.example.back_end.AiProfileChat.dto.request.ChatDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatFilesDTO;
+import com.example.back_end.AiProfileChat.dto.request.ChatMultipartDTO;
+import com.example.back_end.AiProfileChat.dto.request.ErrorDTO;
+import com.example.back_end.AiProfileChat.dto.rest.AnalysisResponseDTO;
+import com.example.back_end.AiProfileChat.dto.rest.ChatResponseDTO;
+import com.example.back_end.AiProfileChat.dto.rest.StringChatResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,7 +45,7 @@ public interface ChatResource {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDTO.class)))
             })
-    ResponseEntity<String> askAi(@RequestBody @Valid ChatFilesDTO request);
+    ResponseEntity<StringChatResponseDTO> askAi(@RequestBody @Valid ChatFilesDTO request);
 
     @Operation(
             description = "Process the information from one file",
@@ -66,7 +72,7 @@ public interface ChatResource {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDTO.class)))
             })
-    ResponseEntity<String> askAi(@ModelAttribute @Valid ChatMultipartDTO request);
+    ResponseEntity<StringChatResponseDTO> askAi(@ModelAttribute @Valid ChatMultipartDTO request);
 
     @Operation(
             description = "Process the information from the prompt",
@@ -93,5 +99,5 @@ public interface ChatResource {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDTO.class)))
             })
-    ResponseEntity<AnalysisResponseDTO> askAi(@RequestBody @Valid ChatDTO request);
+    ResponseEntity<ChatResponseDTO> askAi(@RequestBody @Valid ChatDTO request);
 }
