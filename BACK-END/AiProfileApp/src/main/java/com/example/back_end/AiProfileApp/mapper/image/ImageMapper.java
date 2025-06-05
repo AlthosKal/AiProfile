@@ -9,9 +9,8 @@ import org.mapstruct.Mapping;
 public interface ImageMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "id_image", target = "imageId")
+
     Image toEntity(ImageDTO imageDTO);
 
-    @Mapping(target = "id_image", source = "imageId")
     ImageDTO toDTO(Image image);
 }

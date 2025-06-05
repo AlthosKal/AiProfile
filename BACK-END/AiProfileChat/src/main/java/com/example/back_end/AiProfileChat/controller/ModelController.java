@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("v1/model")
@@ -21,11 +23,11 @@ public class ModelController implements ModelResource {
     @GetMapping
     public ResponseEntity<List<String>> getAllModels() {
         LOGGER.info("Get available models");
-        List<String> models = new ArrayList<>();
 
-        for (Model model : Model.values()) {
-            models.add(model.toString());
-        }
-        return ResponseEntity.ok().body(models);
+        List<String> models = Arrays.stream(Model.values())
+                .map(Enum::name) // o model -> model.toString()
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(models);
     }
 }

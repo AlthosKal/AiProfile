@@ -1,0 +1,69 @@
+services:
+  aiprofileapp:
+    image: yefff/image-backend-aiprofileapp:1.0.0
+    container_name: AIProfileApp
+    volumes:
+      - ./.env-docker:/workspace/.env
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env-docker
+    depends_on:
+      postgres-database:
+        condition: service_healthy
+    networks:
+      - aiprofile-network
+
+  postgres-database:
+    image: postgres:latest
+    container_name: PostgresDatabase
+    environment:
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - postgres-aiprofile-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - aiprofile-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${SPRING_DATASOURCE_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  aiprofilechat:
+    image: yefff/image-backend-aiprofilechat:1.0.0
+    container_name: AIProfileChat
+    volumes:
+      - ./.env-docker:/workspace/.env
+    ports:
+      - "7070:7070"
+    env_file:
+      - .env-docker
+    networks:
+      - aiprofile-network
+  
+  mongo-database:
+    image: mongo:latest
+    container_name: MongoDatabase
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+    volumes:
+      - mongo-aiprofile-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - aiprofile-network
+
+volumes:
+  postgres-aiprofile-data:
+  mongo-aiprofile-data:
+
+networks:
+  aiprofile-network:
+    driver: bridge

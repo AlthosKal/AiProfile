@@ -7,6 +7,7 @@ import com.example.back_end.AiProfileApp.jwt.JwtUtil;
 import com.example.back_end.AiProfileApp.mapper.image.ImageMapper;
 import com.example.back_end.AiProfileApp.repository.ImageRepository;
 import com.example.back_end.AiProfileApp.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,9 @@ public class ImageServiceImpl implements ImageService {
     private final ImageMapper imageMapper;
 
     @Override
-    public ImageDTO saveImage(MultipartFile image, String token, HttpServletResponse response) {
+    public ImageDTO saveImage(MultipartFile image, HttpServletRequest request, HttpServletResponse response) {
         try {
-            String username = jwtUtil.extractEmail(token);
+            String username = jwtUtil.extractEmail(request.getHeader("Authorization"));
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -50,9 +51,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageDTO updateImage(MultipartFile image, String token, HttpServletResponse response) {
+    public ImageDTO updateImage(MultipartFile image, HttpServletRequest request, HttpServletResponse response) {
         try {
-            String username = jwtUtil.extractEmail(token);
+            String username = jwtUtil.extractEmail(request.getHeader("Authorization"));
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -62,7 +63,7 @@ public class ImageServiceImpl implements ImageService {
             }
 
             // Eliminar la imagen anterior
-            deleteImage(username, response);
+            deleteImage(request, response);
 
             // Subir la nueva imagen
             Image newImage = uploadImage(image);
@@ -77,9 +78,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteImage(String token, HttpServletResponse response) {
+    public void deleteImage(HttpServletRequest request, HttpServletResponse response) {
         try {
-            String username = jwtUtil.extractEmail(token);
+            String username = jwtUtil.extractEmail(request.getHeader("Authorization"));
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 

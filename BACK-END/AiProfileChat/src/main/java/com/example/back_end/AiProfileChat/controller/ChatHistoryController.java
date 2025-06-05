@@ -15,17 +15,15 @@ import java.util.List;
 @RequestMapping("/v1/chat/history")
 @RequiredArgsConstructor
 public class ChatHistoryController implements ChatHistoryResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatHistoryController.class);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatHistoryController.class);
     private final ChatService chatService;
 
     @GetMapping("/{conversationId}")
     @Override
-    public ResponseEntity<List<ChatHistoryDTO>> getHistory(
-            @PathVariable String conversationId) {
-        LOGGER.info("Processing history of conversationId {}", conversationId);
-
-        List<ChatHistoryDTO> response = chatService.getHistoryByConversationId(conversationId);
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<List<ChatHistoryDTO>> getHistory(@PathVariable String conversationId) {
+        LOGGER.info("Fetching history for conversationId: {}", conversationId);
+        List<ChatHistoryDTO> history = chatService.getHistoryByConversationId(conversationId);
+        return ResponseEntity.ok(history);
     }
 }

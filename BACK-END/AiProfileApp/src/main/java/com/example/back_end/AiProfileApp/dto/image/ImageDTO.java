@@ -15,6 +15,6 @@ public class ImageDTO {
     @NotBlank
     private String imageUrl;
 
-    @NotBlank
-    private String id_image;
+    private String imageId;
+
 }

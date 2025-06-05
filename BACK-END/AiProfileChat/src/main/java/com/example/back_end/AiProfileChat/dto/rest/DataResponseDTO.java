@@ -6,9 +6,7 @@ import java.util.List;
 
 @Data
 public class DataResponseDTO {
-
     private String name;
     private String description;
-    private List<ValueResponseDTO> values;
-
+    private List<CharDataDTO> values;
 }

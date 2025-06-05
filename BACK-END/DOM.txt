@@ -1,0 +1,423 @@
+.
+├── AiProfileApp
+│   ├── Dockerfile
+│   ├── HELP.md
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   ├── postman_collection.json
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── example
+│   │   │   │           └── back_end
+│   │   │   │               └── AiProfileApp
+│   │   │   │                   ├── AiProfileAppApplication.java
+│   │   │   │                   ├── config
+│   │   │   │                   │   ├── CloudinaryConfig.java
+│   │   │   │                   │   └── SecurityConfig.java
+│   │   │   │                   ├── controller
+│   │   │   │                   │   ├── AuthController.java
+│   │   │   │                   │   ├── DocumentationOpenApi.java
+│   │   │   │                   │   └── TransactionController.java
+│   │   │   │                   ├── dto
+│   │   │   │                   │   ├── auth
+│   │   │   │                   │   │   ├── ChangePasswordDTO.java
+│   │   │   │                   │   │   ├── DeleteUserDTO.java
+│   │   │   │                   │   │   ├── LoginUserDTO.java
+│   │   │   │                   │   │   ├── NewUserDTO.java
+│   │   │   │                   │   │   ├── SendVerificationCodeDTO.java
+│   │   │   │                   │   │   ├── TokenResponseDTO.java
+│   │   │   │                   │   │   ├── UserDetailDTO.java
+│   │   │   │                   │   │   └── ValidateVerificationCodeDTO.java
+│   │   │   │                   │   ├── image
+│   │   │   │                   │   │   └── ImageDTO.java
+│   │   │   │                   │   └── logic
+│   │   │   │                   │       ├── GetTransactionDTO.java
+│   │   │   │                   │       ├── NewTransactionDTO.java
+│   │   │   │                   │       └── UpdateTransactionDTO.java
+│   │   │   │                   ├── entity
+│   │   │   │                   │   ├── extra
+│   │   │   │                   │   │   └── TransactionDescription.java
+│   │   │   │                   │   ├── Image.java
+│   │   │   │                   │   ├── Transaction.java
+│   │   │   │                   │   └── User.java
+│   │   │   │                   ├── enums
+│   │   │   │                   │   └── TransactionType.java
+│   │   │   │                   ├── exception
+│   │   │   │                   │   ├── ApiResponse.java
+│   │   │   │                   │   ├── exceptions
+│   │   │   │                   │   │   ├── DuplicateEmailException.java
+│   │   │   │                   │   │   ├── DuplicateUsernameException.java
+│   │   │   │                   │   │   ├── EmailSendingException.java
+│   │   │   │                   │   │   ├── InvalidCredentialsException.java
+│   │   │   │                   │   │   ├── InvalidEmailException.java
+│   │   │   │                   │   │   ├── LogoutFailedException.java
+│   │   │   │                   │   │   ├── UserNotFoundException.java
+│   │   │   │                   │   │   └── WeakPasswordException.java
+│   │   │   │                   │   └── GlobalExceptionHandler.java
+│   │   │   │                   ├── jwt
+│   │   │   │                   │   ├── JwtAuthenticationFilter.java
+│   │   │   │                   │   ├── JwtEntryPoint.java
+│   │   │   │                   │   └── JwtUtil.java
+│   │   │   │                   ├── mapper
+│   │   │   │                   │   ├── auth
+│   │   │   │                   │   │   ├── NewUserMapper.java
+│   │   │   │                   │   │   └── UserDetailMapper.java
+│   │   │   │                   │   ├── image
+│   │   │   │                   │   │   └── ImageMapper.java
+│   │   │   │                   │   └── logic
+│   │   │   │                   │       ├── GetTransactionMapper.java
+│   │   │   │                   │       ├── NewTransactionMapper.java
+│   │   │   │                   │       └── UpdateTransactionMapper.java
+│   │   │   │                   ├── repository
+│   │   │   │                   │   ├── ImageRepository.java
+│   │   │   │                   │   ├── TransactionRepository.java
+│   │   │   │                   │   └── UserRepository.java
+│   │   │   │                   └── service
+│   │   │   │                       ├── auth
+│   │   │   │                       │   ├── AuthServiceImpl.java
+│   │   │   │                       │   ├── AuthService.java
+│   │   │   │                       │   ├── CookieServiceImpl.java
+│   │   │   │                       │   ├── CookieService.java
+│   │   │   │                       │   ├── SendgridServiceImpl.java
+│   │   │   │                       │   ├── SendgridService.java
+│   │   │   │                       │   ├── TokenBlackListServiceImpl.java
+│   │   │   │                       │   ├── TokenBlackListService.java
+│   │   │   │                       │   ├── UserServiceImpl.java
+│   │   │   │                       │   └── UserService.java
+│   │   │   │                       ├── image
+│   │   │   │                       │   ├── CloudinaryServiceImpl.java
+│   │   │   │                       │   ├── CloudinaryService.java
+│   │   │   │                       │   ├── ImageServiceImpl.java
+│   │   │   │                       │   └── ImageService.java
+│   │   │   │                       └── logic
+│   │   │   │                           ├── ExcelServiceImpl.java
+│   │   │   │                           ├── ExcelService.java
+│   │   │   │                           ├── TransactionServiceImpl.java
+│   │   │   │                           └── TransactionService.java
+│   │   │   └── resources
+│   │   │       └── application.yml
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── example
+│   │                   └── back_end
+│   │                       └── AiProfileApp
+│   │                           └── AiProfileAppApplicationTests.java
+│   └── target
+│       ├── classes
+│       │   ├── application.yml
+│       │   └── com
+│       │       └── example
+│       │           └── back_end
+│       │               └── AiProfileApp
+│       │                   ├── AiProfileAppApplication.class
+│       │                   ├── config
+│       │                   │   ├── CloudinaryConfig.class
+│       │                   │   └── SecurityConfig.class
+│       │                   ├── controller
+│       │                   │   ├── AuthController.class
+│       │                   │   ├── DocumentationOpenApi.class
+│       │                   │   └── TransactionController.class
+│       │                   ├── dto
+│       │                   │   ├── auth
+│       │                   │   │   ├── ChangePasswordDTO.class
+│       │                   │   │   ├── DeleteUserDTO.class
+│       │                   │   │   ├── LoginUserDTO.class
+│       │                   │   │   ├── NewUserDTO.class
+│       │                   │   │   ├── SendVerificationCodeDTO.class
+│       │                   │   │   ├── TokenResponseDTO.class
+│       │                   │   │   ├── UserDetailDTO.class
+│       │                   │   │   └── ValidateVerificationCodeDTO.class
+│       │                   │   ├── image
+│       │                   │   │   └── ImageDTO.class
+│       │                   │   └── logic
+│       │                   │       ├── GetTransactionDTO.class
+│       │                   │       ├── NewTransactionDTO.class
+│       │                   │       └── UpdateTransactionDTO.class
+│       │                   ├── entity
+│       │                   │   ├── extra
+│       │                   │   │   └── TransactionDescription.class
+│       │                   │   ├── Image$ImageBuilder.class
+│       │                   │   ├── Image.class
+│       │                   │   ├── Transaction$TransactionBuilder.class
+│       │                   │   ├── Transaction.class
+│       │                   │   ├── User$UserBuilder.class
+│       │                   │   └── User.class
+│       │                   ├── enums
+│       │                   │   └── TransactionType.class
+│       │                   ├── exception
+│       │                   │   ├── ApiResponse$ApiResponseBuilder.class
+│       │                   │   ├── ApiResponse.class
+│       │                   │   ├── exceptions
+│       │                   │   │   ├── DuplicateEmailException.class
+│       │                   │   │   ├── DuplicateUsernameException.class
+│       │                   │   │   ├── EmailSendingException.class
+│       │                   │   │   ├── InvalidCredentialsException.class
+│       │                   │   │   ├── InvalidEmailException.class
+│       │                   │   │   ├── LogoutFailedException.class
+│       │                   │   │   ├── UserNotFoundException.class
+│       │                   │   │   └── WeakPasswordException.class
+│       │                   │   └── GlobalExceptionHandler.class
+│       │                   ├── jwt
+│       │                   │   ├── JwtAuthenticationFilter.class
+│       │                   │   ├── JwtEntryPoint.class
+│       │                   │   └── JwtUtil.class
+│       │                   ├── mapper
+│       │                   │   ├── auth
+│       │                   │   │   ├── NewUserMapper.class
+│       │                   │   │   ├── NewUserMapperImpl.class
+│       │                   │   │   ├── UserDetailMapper.class
+│       │                   │   │   └── UserDetailMapperImpl.class
+│       │                   │   ├── image
+│       │                   │   │   ├── ImageMapper.class
+│       │                   │   │   └── ImageMapperImpl.class
+│       │                   │   └── logic
+│       │                   │       ├── GetTransactionMapper.class
+│       │                   │       ├── GetTransactionMapperImpl.class
+│       │                   │       ├── NewTransactionMapper.class
+│       │                   │       ├── NewTransactionMapperImpl.class
+│       │                   │       ├── UpdateTransactionMapper.class
+│       │                   │       └── UpdateTransactionMapperImpl.class
+│       │                   ├── repository
+│       │                   │   ├── ImageRepository.class
+│       │                   │   ├── TransactionRepository.class
+│       │                   │   └── UserRepository.class
+│       │                   └── service
+│       │                       ├── auth
+│       │                       │   ├── AuthService.class
+│       │                       │   ├── AuthServiceImpl.class
+│       │                       │   ├── CookieService.class
+│       │                       │   ├── CookieServiceImpl.class
+│       │                       │   ├── SendgridService.class
+│       │                       │   ├── SendgridServiceImpl.class
+│       │                       │   ├── TokenBlackListService.class
+│       │                       │   ├── TokenBlackListServiceImpl.class
+│       │                       │   ├── UserService.class
+│       │                       │   └── UserServiceImpl.class
+│       │                       ├── image
+│       │                       │   ├── CloudinaryService.class
+│       │                       │   ├── CloudinaryServiceImpl.class
+│       │                       │   ├── ImageService.class
+│       │                       │   └── ImageServiceImpl.class
+│       │                       └── logic
+│       │                           ├── ExcelService.class
+│       │                           ├── ExcelServiceImpl.class
+│       │                           ├── TransactionService.class
+│       │                           └── TransactionServiceImpl.class
+│       ├── formatter-maven-cache.properties
+│       ├── generated-sources
+│       │   └── annotations
+│       │       └── com
+│       │           └── example
+│       │               └── back_end
+│       │                   └── AiProfileApp
+│       │                       └── mapper
+│       │                           ├── auth
+│       │                           │   ├── NewUserMapperImpl.java
+│       │                           │   └── UserDetailMapperImpl.java
+│       │                           ├── image
+│       │                           │   └── ImageMapperImpl.java
+│       │                           └── logic
+│       │                               ├── GetTransactionMapperImpl.java
+│       │                               ├── NewTransactionMapperImpl.java
+│       │                               └── UpdateTransactionMapperImpl.java
+│       ├── generated-test-sources
+│       │   └── test-annotations
+│       ├── maven-status
+│       │   └── maven-compiler-plugin
+│       │       └── compile
+│       │           └── default-compile
+│       │               ├── createdFiles.lst
+│       │               └── inputFiles.lst
+│       └── test-classes
+│           └── com
+│               └── example
+│                   └── back_end
+│                       └── AiProfileApp
+│                           └── AiProfileAppApplicationTests.class
+├── AiProfileChat
+│   ├── Dockerfile
+│   ├── HELP.md
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── example
+│   │   │   │           └── back_end
+│   │   │   │               └── AiProfileChat
+│   │   │   │                   ├── AiProfileChatApplication.java
+│   │   │   │                   ├── configuration
+│   │   │   │                   │   ├── ia
+│   │   │   │                   │   │   ├── AiConfiguration.java
+│   │   │   │                   │   │   └── CachingConfiguration.java
+│   │   │   │                   │   └── security
+│   │   │   │                   │       ├── JwtRequestFilter.java
+│   │   │   │                   │       └── SecurityConfiguration.java
+│   │   │   │                   ├── connector
+│   │   │   │                   │   ├── AiProfileAppConnector.java
+│   │   │   │                   │   ├── config
+│   │   │   │                   │   │   ├── EndpointConfiguration.java
+│   │   │   │                   │   │   ├── HostConfiguration.java
+│   │   │   │                   │   │   └── HttpConnectorConfiguration.java
+│   │   │   │                   │   └── rest
+│   │   │   │                   │       ├── GetTransactionDTO.java
+│   │   │   │                   │       └── TransactionDescription.java
+│   │   │   │                   ├── controller
+│   │   │   │                   │   ├── ChatController.java
+│   │   │   │                   │   ├── ChatHistoryController.java
+│   │   │   │                   │   ├── DocumentationController.java
+│   │   │   │                   │   ├── ModelController.java
+│   │   │   │                   │   └── resource
+│   │   │   │                   │       ├── ChatHistoryResource.java
+│   │   │   │                   │       ├── ChatResource.java
+│   │   │   │                   │       └── ModelResource.java
+│   │   │   │                   ├── dto
+│   │   │   │                   │   ├── request
+│   │   │   │                   │   │   ├── ChatDTO.java
+│   │   │   │                   │   │   ├── ChatFilesDTO.java
+│   │   │   │                   │   │   ├── ChatHistoryDTO.java
+│   │   │   │                   │   │   ├── ChatMultipartDTO.java
+│   │   │   │                   │   │   ├── CustomUserDetailsDTO.java
+│   │   │   │                   │   │   └── ErrorDTO.java
+│   │   │   │                   │   └── rest
+│   │   │   │                   │       ├── AnalysisResponseDTO.java
+│   │   │   │                   │       ├── ChatResponseDTO.java
+│   │   │   │                   │       ├── DataResponseDTO.java
+│   │   │   │                   │       ├── StringChatResponseDTO.java
+│   │   │   │                   │       └── ValueResponseDTO.java
+│   │   │   │                   ├── entity
+│   │   │   │                   │   └── ChatHistory.java
+│   │   │   │                   ├── enums
+│   │   │   │                   │   ├── ApiError.java
+│   │   │   │                   │   ├── Model.java
+│   │   │   │                   │   └── TransactionType.java
+│   │   │   │                   ├── exception
+│   │   │   │                   │   ├── AiProfileException.java
+│   │   │   │                   │   ├── ApiResponse.java
+│   │   │   │                   │   └── GlobalExceptionHandler.java
+│   │   │   │                   ├── mapper
+│   │   │   │                   │   └── ChatHistoryMapper.java
+│   │   │   │                   ├── repository
+│   │   │   │                   │   └── AiHistoryRepository.java
+│   │   │   │                   ├── service
+│   │   │   │                   │   ├── ChatServiceImpl.java
+│   │   │   │                   │   ├── ChatService.java
+│   │   │   │                   │   └── functions
+│   │   │   │                   │       ├── BalanceOverTimeFunction.java
+│   │   │   │                   │       ├── ConversationIdService.java
+│   │   │   │                   │       └── IncomesAndExpensesByPeriodFunction.java
+│   │   │   │                   └── util
+│   │   │   │                       └── AiProfileChatUtil.java
+│   │   │   └── resources
+│   │   │       ├── application.yml
+│   │   │       └── prompts
+│   │   │           └── ai_prompt_template.txt
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── example
+│   │                   └── back_end
+│   │                       └── AiProfileChat
+│   │                           └── AiProfileChatApplicationTests.java
+│   └── target
+│       ├── classes
+│       │   ├── application.yml
+│       │   ├── com
+│       │   │   └── example
+│       │   │       └── back_end
+│       │   │           └── AiProfileChat
+│       │   │               ├── AiProfileChatApplication.class
+│       │   │               ├── configuration
+│       │   │               │   ├── ia
+│       │   │               │   │   ├── AiConfiguration.class
+│       │   │               │   │   └── CachingConfiguration.class
+│       │   │               │   └── security
+│       │   │               │       ├── JwtRequestFilter.class
+│       │   │               │       └── SecurityConfiguration.class
+│       │   │               ├── connector
+│       │   │               │   ├── AiProfileAppConnector$1.class
+│       │   │               │   ├── AiProfileAppConnector.class
+│       │   │               │   ├── config
+│       │   │               │   │   ├── EndpointConfiguration.class
+│       │   │               │   │   ├── HostConfiguration.class
+│       │   │               │   │   └── HttpConnectorConfiguration.class
+│       │   │               │   └── rest
+│       │   │               │       ├── GetTransactionDTO.class
+│       │   │               │       └── TransactionDescription.class
+│       │   │               ├── controller
+│       │   │               │   ├── ChatController.class
+│       │   │               │   ├── ChatHistoryController.class
+│       │   │               │   ├── DocumentationController.class
+│       │   │               │   ├── ModelController.class
+│       │   │               │   └── resource
+│       │   │               │       ├── ChatHistoryResource.class
+│       │   │               │       ├── ChatResource.class
+│       │   │               │       └── ModelResource.class
+│       │   │               ├── dto
+│       │   │               │   ├── request
+│       │   │               │   │   ├── ChatDTO.class
+│       │   │               │   │   ├── ChatFilesDTO.class
+│       │   │               │   │   ├── ChatHistoryDTO$ChatHistoryDTOBuilder.class
+│       │   │               │   │   ├── ChatHistoryDTO.class
+│       │   │               │   │   ├── ChatMultipartDTO.class
+│       │   │               │   │   ├── CustomUserDetailsDTO.class
+│       │   │               │   │   └── ErrorDTO.class
+│       │   │               │   └── rest
+│       │   │               │       ├── AnalysisResponseDTO.class
+│       │   │               │       ├── ChatResponseDTO.class
+│       │   │               │       ├── DataResponseDTO.class
+│       │   │               │       ├── StringChatResponseDTO.class
+│       │   │               │       └── ValueResponseDTO.class
+│       │   │               ├── entity
+│       │   │               │   ├── ChatHistory$ChatHistoryBuilder.class
+│       │   │               │   └── ChatHistory.class
+│       │   │               ├── enums
+│       │   │               │   ├── ApiError.class
+│       │   │               │   ├── Model.class
+│       │   │               │   └── TransactionType.class
+│       │   │               ├── exception
+│       │   │               │   ├── AiProfileException.class
+│       │   │               │   ├── ApiResponse$ApiResponseBuilder.class
+│       │   │               │   ├── ApiResponse.class
+│       │   │               │   └── GlobalExceptionHandler.class
+│       │   │               ├── mapper
+│       │   │               │   ├── ChatHistoryMapper.class
+│       │   │               │   └── ChatHistoryMapperImpl.class
+│       │   │               ├── repository
+│       │   │               │   └── AiHistoryRepository.class
+│       │   │               ├── service
+│       │   │               │   ├── ChatService.class
+│       │   │               │   ├── ChatServiceImpl.class
+│       │   │               │   └── functions
+│       │   │               │       ├── BalanceOverTimeFunction$Request.class
+│       │   │               │       ├── BalanceOverTimeFunction.class
+│       │   │               │       ├── ConversationIdService.class
+│       │   │               │       ├── IncomesAndExpensesByPeriodFunction$Request.class
+│       │   │               │       └── IncomesAndExpensesByPeriodFunction.class
+│       │   │               └── util
+│       │   │                   └── AiProfileChatUtil.class
+│       │   └── prompts
+│       │       └── ai_prompt_template.txt
+│       ├── generated-sources
+│       │   └── annotations
+│       │       └── com
+│       │           └── example
+│       │               └── back_end
+│       │                   └── AiProfileChat
+│       │                       └── mapper
+│       │                           └── ChatHistoryMapperImpl.java
+│       └── maven-status
+│           └── maven-compiler-plugin
+│               └── compile
+│                   └── default-compile
+│                       ├── createdFiles.lst
+│                       └── inputFiles.lst
+└── DOM.txt
+
+157 directories, 264 files

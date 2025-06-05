@@ -45,7 +45,7 @@ public interface ChatResource {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDTO.class)))
             })
-    ResponseEntity<StringChatResponseDTO> askAi(@RequestBody @Valid ChatFilesDTO request);
+    ResponseEntity<StringChatResponseDTO> askAiWithUrl(@RequestBody @Valid ChatFilesDTO request);
 
     @Operation(
             description = "Process the information from one file",
@@ -72,7 +72,7 @@ public interface ChatResource {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDTO.class)))
             })
-    ResponseEntity<StringChatResponseDTO> askAi(@ModelAttribute @Valid ChatMultipartDTO request);
+    ResponseEntity<StringChatResponseDTO> askAiWithFile(@ModelAttribute @Valid ChatMultipartDTO request);
 
     @Operation(
             description = "Process the information from the prompt",

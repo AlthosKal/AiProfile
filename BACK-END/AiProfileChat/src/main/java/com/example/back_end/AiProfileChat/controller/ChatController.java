@@ -43,7 +43,7 @@ public class ChatController implements ChatResource {
 
     @Override
     @PostMapping(value = "/chat-with-url")
-    public ResponseEntity<StringChatResponseDTO> askAi(@RequestBody @Valid ChatFilesDTO request) {
+    public ResponseEntity<StringChatResponseDTO> askAiWithUrl(@RequestBody @Valid ChatFilesDTO request) {
         if (request.needsConversationId()) {
             request.setConversationId(conversationIdService.generateConversationId());
             LOGGER.info("Generated conversationId: {}", request.getConversationId());
@@ -57,7 +57,7 @@ public class ChatController implements ChatResource {
 
     @Override
     @PostMapping(value = "/chat-with-file")
-    public ResponseEntity<StringChatResponseDTO> askAi(@ModelAttribute @Valid ChatMultipartDTO request) {
+    public ResponseEntity<StringChatResponseDTO> askAiWithFile(@ModelAttribute @Valid ChatMultipartDTO request) {
         if (request.needsConversationId()) {
             request.setConversationId(conversationIdService.generateConversationId());
             LOGGER.info("Generated conversationId: {}", request.getConversationId());
