@@ -15,12 +15,21 @@ class ApiClient {
   late final Dio _dioApp;
   late final Dio _dioChat;
 
-  final String baseUrlApp = dotenv.get('AI_PROFILE_APP_URL');
-  final String baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL');
+  late final String baseUrlApp;
+  late final String baseUrlChat;
+
+  bool _isInitialized = false;
 
   ApiClient._internal() {
+    _initializeUrls();
     _dioApp = _createDio(baseUrlApp);
     _dioChat = _createDio(baseUrlChat);
+    _isInitialized = true;
+  }
+
+  void _initializeUrls() {
+      baseUrlApp = dotenv.get('AI_PROFILE_APP_URL');
+      baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL');
   }
 
   Dio _createDio(String baseUrl) {
@@ -52,6 +61,9 @@ class ApiClient {
 
     return dio;
   }
+
+  //Verificar si está inicializado
+  bool get isInitialized => _isInitialized;
 
   // Métodos públicos para usar las APIs
   Future<Response> getApp(String path, {Map<String, dynamic>? queryParameters}) =>

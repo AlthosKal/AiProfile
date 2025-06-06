@@ -13,6 +13,9 @@ class AuthService {
   final _api = ApiClient();
   final _storage = const FlutterSecureStorage();
 
+  //Verificar si el servicio puede funcionar correctamente
+  bool get isReady => _api.isInitialized;
+
   Future<TokenResponseDTO> login(LoginUserDTO dto) async {
     final response = await _api.postApp('/auth/login', dto.toJson());
 
