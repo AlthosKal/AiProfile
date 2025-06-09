@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../core/service/app/auth_service.dart';
+
 import '../../core/exception/global_exception_handler.dart';
+import '../../core/service/app/auth_service.dart';
 import '../../dto/auth/request/login_user_dto.dart';
 import '../../route/app_routes.dart';
 
@@ -12,7 +13,8 @@ class LoginController {
   final ValueNotifier<bool> obscurePassword = ValueNotifier(true);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
-  LoginController({AuthService? authService}) : _authService = authService ?? AuthService();
+  LoginController({AuthService? authService})
+    : _authService = authService ?? AuthService();
 
   // Método de login
   Future<void> login({
@@ -29,11 +31,9 @@ class LoginController {
 
     await GlobalExceptionHandler.run(() async {
       await _authService.login(dto);
-      if (context.mounted) {
+      if (context.mounted)
         Navigator.pushReplacementNamed(context, AppRoutes.home);
-      }
     });
-
     isLoading.value = false;
   }
 

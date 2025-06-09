@@ -42,6 +42,9 @@ services:
       - "7070:7070"
     env_file:
       - .env-docker
+    depends_on:
+      mongo-database:
+        condition: service_healthy
     networks:
       - aiprofile-network
   
@@ -52,13 +55,18 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-      MONGO_COLLECTION: ${MONGO_COLLECTION}
     volumes:
       - mongo-aiprofile-data:/data/db
     ports:
       - "27017:27017"
     networks:
       - aiprofile-network
+    command: ["mongod", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres-aiprofile-data:

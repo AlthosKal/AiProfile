@@ -1,3 +1,1 @@
-enum Model {
-  OPENAI, DEEPSEEK
-}
+enum Model { OPENAI, DEEPSEEK }

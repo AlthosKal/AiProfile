@@ -8,16 +8,15 @@ class DataResponseDTO {
   DataResponseDTO({
     required this.name,
     required this.description,
-    required this.values
+    required this.values,
   });
 
-  factory DataResponseDTO.fromJson(Map<String, dynamic> json){
+  factory DataResponseDTO.fromJson(Map<String, dynamic> json) {
     return DataResponseDTO(
-        name: json['name'],
-        description: json['description'],
-        values: (json['values'] as List)
-        .map((e) => CharDataDTO.fromJson(e))
-        .toList(),
+      name: json['name'],
+      description: json['description'],
+      values:
+          (json['values'] as List).map((e) => CharDataDTO.fromJson(e)).toList(),
     );
   }
 }

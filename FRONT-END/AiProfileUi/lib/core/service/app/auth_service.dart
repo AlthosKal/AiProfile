@@ -23,13 +23,15 @@ class AuthService {
       final json = response.data;
       final apiResponse = ApiResponse<TokenResponseDTO>.fromJson(
         json,
-          (data) => TokenResponseDTO.fromJson(data),
+        (data) => TokenResponseDTO.fromJson(data),
       );
 
       await _storage.write(key: 'Authorization', value: apiResponse.data.token);
       return apiResponse.data;
     } else {
-      throw Exception('Login fallido: código ${response.statusCode}, ${response.statusMessage}');
+      throw Exception(
+        'Login fallido: código ${response.statusCode}, ${response.statusMessage}',
+      );
     }
   }
 
@@ -37,42 +39,58 @@ class AuthService {
     final response = await _api.postApp('/auth/register', dto.toJson());
 
     if (response.statusCode != 201) {
-      throw Exception('Registro Fallido: : ${response.statusCode}, ${response.statusMessage}');
+      throw Exception(
+        'Registro Fallido: : ${response.statusCode}, ${response.statusMessage}',
+      );
     }
   }
 
   Future<void> sendVerificationCode({
-    bool isRegistration = false,
-    required  SendVerificationCodeDTO dto
-  }) async{
-    final response = await _api.postApp('/auth/send-verification-code?isRegistration=$isRegistration',dto.toJson());
+    required bool isRegistration,
+    required SendVerificationCodeDTO dto,
+  }) async {
+    final response = await _api.postApp(
+      '/auth/send-verification-code?isRegistration=$isRegistration',
+      dto.toJson(),
+    );
 
     if (response.statusCode != 200) {
-      throw Exception('Error al enviar el código de Verificación: ${response.statusMessage}, ${response.statusMessage}');
+      throw Exception(
+        'Error al enviar el código de Verificación: ${response.statusMessage}, ${response.statusMessage}',
+      );
     }
   }
 
   Future<void> validateVerificationCode(ValidateVerificationCodeDTO dto) async {
-    final response = await _api.postApp('/auth/validate-verification-code', dto.toJson());
-    if(response.statusCode !=200) {
-      throw Exception('Código Invalido: ${response.statusMessage}, ${response.statusMessage}');
+    final response = await _api.postApp(
+      '/auth/validate-verification-code',
+      dto.toJson(),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Código Invalido: ${response.statusMessage}, ${response.statusMessage}',
+      );
     }
   }
 
   Future<void> changePasswordWithCode(ChangePasswordDTO dto) async {
     final response = await _api.putApp('/auth/change-password', dto.toJson());
 
-    if (response.statusCode != 200){
-      throw Exception('Error al cambian la contraseña: ${response.statusCode}, ${response.statusMessage}');
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Error al cambian la contraseña: ${response.statusCode}, ${response.statusMessage}',
+      );
     }
   }
 
   Future<void> logout() async {
     final response = await _api.postApp('/auth/logout', {});
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       await _storage.delete(key: 'Authorization');
     } else {
-      throw Exception('Error al cerrar sesión: ${response.statusCode}, ${response.statusMessage}');
+      throw Exception(
+        'Error al cerrar sesión: ${response.statusCode}, ${response.statusMessage}',
+      );
     }
   }
 
@@ -80,7 +98,9 @@ class AuthService {
     final response = await _api.deleteApp('/auth/$userId');
 
     if (response.statusCode != 204) {
-      throw Exception('Error al eliminar usuario: código ${response.statusCode}');
+      throw Exception(
+        'Error al eliminar usuario: código ${response.statusCode}',
+      );
     }
   }
 }

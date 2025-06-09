@@ -8,13 +8,13 @@ class ChatDTO {
   ChatDTO({
     required this.model,
     required this.conversationId,
-    required this.prompt
+    required this.prompt,
   });
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'model': model.name,
-      if (conversationId != null )'conversationId': conversationId,
+      if (conversationId != null) 'conversationId': conversationId,
       'prompt': prompt,
     };
   }

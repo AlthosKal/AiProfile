@@ -18,5 +18,4 @@ class ModelService {
       throw Exception('Respuesta inesperada del servidor');
     }
   }
-
 }

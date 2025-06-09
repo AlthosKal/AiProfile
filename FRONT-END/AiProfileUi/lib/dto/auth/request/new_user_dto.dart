@@ -6,22 +6,21 @@ class NewUserDTO {
   NewUserDTO({
     required this.username,
     required this.email,
-    required this.password
+    required this.password,
   });
 
-  factory NewUserDTO.fromJson(Map<String, dynamic> json){
+  factory NewUserDTO.fromJson(Map<String, dynamic> json) {
     return NewUserDTO(
-        username: json['username'],
-        email: json['email'],
-        password: json['password']
+      username: json['username'],
+      email: json['email'],
+      password: json['password'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'nameOrEmail': username,
+      'username': username,
       'email': email,
-      'password': password,
-    };
+      'password': password};
   }
 }

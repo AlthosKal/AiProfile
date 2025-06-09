@@ -24,12 +24,18 @@ class TransactionService {
     if (to != null) queryParams['to'] = to;
     if (kind != null) queryParams['kind'] = kind;
 
-    final response = await _api.getApp('/transaction', queryParameters: queryParams);
+    final response = await _api.getApp(
+      '/transaction',
+      queryParameters: queryParams,
+    );
 
     if (response.statusCode == 200) {
       final apiResponse = ApiResponse<List<GetTransactionDTO>>.fromJson(
         response.data,
-            (data) => (data as List).map((item) => GetTransactionDTO.fromJson(item)).toList(),
+        (data) =>
+            (data as List)
+                .map((item) => GetTransactionDTO.fromJson(item))
+                .toList(),
       );
       return apiResponse.data;
     } else {
@@ -47,17 +53,25 @@ class TransactionService {
     }
   }
 
-  Future<List<NewTransactionDTO>> createTransactions(List<NewTransactionDTO> dtoList) async {
-    final response = await _api.postApp('/transaction/batch', NewTransactionDTO.toListJson(dtoList));
+  Future<List<NewTransactionDTO>> createTransactions(
+    List<NewTransactionDTO> dtoList,
+  ) async {
+    final response = await _api.postApp(
+      '/transaction/batch',
+      NewTransactionDTO.toListJson(dtoList),
+    );
 
     if (response.statusCode == 200) {
       final apiResponse = ApiResponse<List<NewTransactionDTO>>.fromJson(
         response.data,
-            (data) => (data as List).map((e) => NewTransactionDTO.fromJson(e)).toList(),
+        (data) =>
+            (data as List).map((e) => NewTransactionDTO.fromJson(e)).toList(),
       );
       return apiResponse.data;
     } else {
-      throw Exception('Error al crear transacciones: ${response.statusCode} - ${response.statusMessage}');
+      throw Exception(
+        'Error al crear transacciones: ${response.statusCode} - ${response.statusMessage}',
+      );
     }
   }
 
@@ -80,10 +94,7 @@ class TransactionService {
       await Permission.storage.request();
     }
 
-    final response = await _api.downloadFile(
-      '/transactions/export',
-      savePath,
-    );
+    final response = await _api.downloadFile('/transactions/export', savePath);
 
     if (response.statusCode == 200) {
       return File(savePath);

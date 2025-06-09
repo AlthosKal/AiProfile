@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class BlurredCard extends StatelessWidget {
@@ -23,7 +24,7 @@ class BlurredCard extends StatelessWidget {
                 color: Theme.of(context).primaryColor.withOpacity(0.2),
                 blurRadius: 6,
                 spreadRadius: 1,
-              )
+              ),
             ],
           ),
           child: child,

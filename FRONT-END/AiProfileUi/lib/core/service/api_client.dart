@@ -28,36 +28,38 @@ class ApiClient {
   }
 
   void _initializeUrls() {
-      baseUrlApp = dotenv.get('AI_PROFILE_APP_URL');
-      baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL');
+    baseUrlApp = dotenv.get('AI_PROFILE_APP_URL');
+    baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL');
   }
 
   Dio _createDio(String baseUrl) {
-    final dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    ));
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
 
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final token = await _storage.read(key: 'Authorization');
-        if (token != null) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(options);
-      },
-      onError: (DioException e, handler) {
-        // Manejo centralizado de errores
-        if (e.response?.statusCode == 401) {
-          // Redirigir al login
-        }
-        return handler.next(e);
-      },
-    ));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await _storage.read(key: 'Authorization');
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+        onError: (DioException e, handler) {
+          // Manejo centralizado de errores
+          if (e.response?.statusCode == 401) {
+            // Redirigir al login
+          }
+          return handler.next(e);
+        },
+      ),
+    );
 
     return dio;
   }
@@ -66,11 +68,19 @@ class ApiClient {
   bool get isInitialized => _isInitialized;
 
   // Métodos públicos para usar las APIs
-  Future<Response> getApp(String path, {Map<String, dynamic>? queryParameters}) =>
-      _dioApp.get(path, queryParameters: queryParameters);
-  Future<Response> postApp(String path, dynamic data) => _dioApp.post(path, data: data);
-  Future<Response> putApp(String path, dynamic data) => _dioApp.put(path, data: data);
+  Future<Response> getApp(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) => _dioApp.get(path, queryParameters: queryParameters);
+
+  Future<Response> postApp(String path, dynamic data) =>
+      _dioApp.post(path, data: data);
+
+  Future<Response> putApp(String path, dynamic data) =>
+      _dioApp.put(path, data: data);
+
   Future<Response> deleteApp(String path) => _dioApp.delete(path);
+
   Future<Response> downloadFile(String path, String savePath) {
     return _dioApp.download(
       path,
@@ -79,9 +89,13 @@ class ApiClient {
     );
   }
 
-
   Future<Response> getChat(String path) => _dioChat.get(path);
-  Future<Response> postChat(String path, dynamic data) => _dioChat.post(path, data: data);
-  Future<Response> putChat(String path, dynamic data) => _dioChat.put(path, data: data);
+
+  Future<Response> postChat(String path, dynamic data) =>
+      _dioChat.post(path, data: data);
+
+  Future<Response> putChat(String path, dynamic data) =>
+      _dioChat.put(path, data: data);
+
   Future<Response> deleteChat(String path) => _dioChat.delete(path);
 }

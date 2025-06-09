@@ -4,10 +4,7 @@ class GetTransactionDTO {
   final TransactionDescription description;
   final int amount;
 
-  GetTransactionDTO({
-    required this.description,
-    required this.amount,
-  });
+  GetTransactionDTO({required this.description, required this.amount});
 
   factory GetTransactionDTO.fromJson(Map<String, dynamic> json) {
     return GetTransactionDTO(

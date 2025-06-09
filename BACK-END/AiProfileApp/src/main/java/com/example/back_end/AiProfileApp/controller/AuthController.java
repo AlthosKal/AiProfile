@@ -74,10 +74,6 @@ public class AuthController {
             throw new IllegalArgumentException("Código de verificación es requerido");
         }
 
-        if (!dto.getNewPassword().equals(dto.getConfirmNewPassword())) {
-            throw new IllegalArgumentException("No coinciden las contraseñas");
-        }
-
         String result = authService.changePasswordWithVerification(dto);
         return ResponseEntity.ok(ApiResponse.ok(result, null, request.getRequestURI()));
     }

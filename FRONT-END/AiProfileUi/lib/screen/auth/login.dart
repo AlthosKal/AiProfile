@@ -1,5 +1,8 @@
 import 'package:ai_profile_ui/controller/login_controller.dart';
-import 'package:ai_profile_ui/widget/particle_animation_widget.dart';
+import 'package:ai_profile_ui/widget/animated_background_scaffold.dart';
+import 'package:ai_profile_ui/widget/common/FormTitleText.dart';
+import 'package:ai_profile_ui/widget/common/name_or_email_form_field.dart';
+import 'package:ai_profile_ui/widget/common/password_form_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../route/app_routes.dart';
@@ -11,19 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const Positioned.fill(child: ParticleAnimation()),
-          Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: const LoginForm(),
-            ),
-          ),
-        ],
-      ),
-    );
+    return AnimatedBackgroundScaffold(child: const LoginForm());
   }
 }
 
@@ -64,7 +55,6 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return BlurredCard(
@@ -73,36 +63,11 @@ class _LoginFormState extends State<LoginForm> {
         key: _formKey,
         child: Column(
           children: [
-            Text(
-              'Inicio de Sesión',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
-              ),
-            ),
+            FormTitleText(text: 'Inicio de Sesión'),
             const SizedBox(height: 20),
-            TextFormField(
+            NameOrEmailFormField(
               controller: _nameOrEmailController,
               focusNode: _nameOrEmailFocusNode,
-              cursorColor: Colors.white,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'Nombre o correo',
-                labelStyle: TextStyle(color: Colors.white),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white)
-                ),
-              ),
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Campo requerido';
-                }
-                if (!value.contains('@') && value.trim().length < 3) {
-                  return 'Ingrese un nombre válido o un correo electrónico';
-                }
-                return null;
-              },
               onFieldSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_passwordFocusNode);
               },
@@ -111,34 +76,9 @@ class _LoginFormState extends State<LoginForm> {
             ValueListenableBuilder<bool>(
               valueListenable: _loginController.obscurePassword,
               builder: (context, obscure, _) {
-                return TextFormField(
+                return PasswordFormField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
-                  obscureText: obscure,
-                  cursorColor: Colors.white,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    labelStyle: const TextStyle(color: Colors.white),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white)
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        obscure ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.white,
-                      ),
-                      onPressed: _loginController.togglePasswordVisibility,
-                    ),
-                  ),
-                  textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Campo requerido';
-                    if (value.length < 6)
-                      return 'Debe tener al menos 6 caracteres';
-                    return null;
-                  },
                   onFieldSubmitted: (_) => _submitLogin(),
                 );
               },
@@ -173,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
               valueListenable: _loginController.isLoading,
               builder: (context, isLoading, _) {
                 return isLoading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(color: Colors.white)
                     : PrimaryButton(label: 'Ingresar', onPressed: _submitLogin);
               },
             ),
@@ -195,7 +135,8 @@ class _LoginFormState extends State<LoginForm> {
             ),
             TextButton(
               onPressed:
-                  () => Navigator.pushNamed(context, AppRoutes.recoverPassword),
+                  () =>
+                      Navigator.pushNamed(context, AppRoutes.sendVerificationCode),
               child: const Text.rich(
                 TextSpan(
                   text: '¿Olvidaste tu contraseña? ',

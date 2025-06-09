@@ -4,16 +4,10 @@ class NewTransactionDTO {
   final TransactionDescription description;
   final int amount;
 
-  NewTransactionDTO({
-    required this.description,
-    required this.amount
-  });
+  NewTransactionDTO({required this.description, required this.amount});
 
-  Map<String, dynamic> toJson(){
-    return {
-      'description' : description,
-      'amount' : amount,
-    };
+  Map<String, dynamic> toJson() {
+    return {'description': description, 'amount': amount};
   }
 
   factory NewTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -23,7 +17,7 @@ class NewTransactionDTO {
     );
   }
 
-  static List<Map<String, dynamic>> toListJson(List<NewTransactionDTO> dto){
+  static List<Map<String, dynamic>> toListJson(List<NewTransactionDTO> dto) {
     return dto.map((t) => t.toJson()).toList();
   }
 }

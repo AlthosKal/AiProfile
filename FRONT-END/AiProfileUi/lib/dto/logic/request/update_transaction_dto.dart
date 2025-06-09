@@ -10,14 +10,10 @@ class UpdateTransactionDTO {
   UpdateTransactionDTO({
     required this.id,
     required this.description,
-    required this.amount
+    required this.amount,
   });
 
-  Map<String, dynamic> toJson(){
-    return {
-      'id' : id,
-      'description' : description,
-      'amount' : amount,
-    };
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'description': description, 'amount': amount};
   }
 }

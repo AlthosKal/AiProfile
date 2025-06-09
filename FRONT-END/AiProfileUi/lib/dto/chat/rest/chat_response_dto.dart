@@ -4,10 +4,7 @@ class ChatResponseDTO {
   final String conversationId;
   final AnalysisResponseDTO analysis;
 
-  ChatResponseDTO({
-    required this.conversationId,
-    required this.analysis,
-  });
+  ChatResponseDTO({required this.conversationId, required this.analysis});
 
   factory ChatResponseDTO.fromJson(Map<String, dynamic> json) {
     return ChatResponseDTO(

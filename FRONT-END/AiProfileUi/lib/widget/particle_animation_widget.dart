@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class Particle {
@@ -19,10 +20,12 @@ class Particle {
   void move(Size screenSize) {
     position = position.translate(direction.dx * speed, direction.dy * speed);
 
-    if (position.dx - size / 2 < 0 || position.dx + size / 2 > screenSize.width) {
+    if (position.dx - size / 2 < 0 ||
+        position.dx + size / 2 > screenSize.width) {
       direction = Offset(-direction.dx, direction.dy);
     }
-    if (position.dy - size / 2 < 0 || position.dy + size / 2 > screenSize.height) {
+    if (position.dy - size / 2 < 0 ||
+        position.dy + size / 2 > screenSize.height) {
       direction = Offset(direction.dx, -direction.dy);
     }
   }
@@ -47,7 +50,6 @@ class ParticlePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-
 class ParticleAnimation extends StatefulWidget {
   const ParticleAnimation({super.key});
 
@@ -55,7 +57,8 @@ class ParticleAnimation extends StatefulWidget {
   State<ParticleAnimation> createState() => _ParticleAnimationState();
 }
 
-class _ParticleAnimationState extends State<ParticleAnimation> with SingleTickerProviderStateMixin {
+class _ParticleAnimationState extends State<ParticleAnimation>
+    with SingleTickerProviderStateMixin {
   late List<Particle> particles;
   late AnimationController _controller;
   final int numberOfParticles = 40;
@@ -67,8 +70,8 @@ class _ParticleAnimationState extends State<ParticleAnimation> with SingleTicker
     super.initState();
 
     _controller = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 33) // ~30 FPS
+      vsync: this,
+      duration: const Duration(milliseconds: 33), // ~30 FPS
     )..repeat();
 
     particles = [];
@@ -130,10 +133,7 @@ class _ParticleAnimationState extends State<ParticleAnimation> with SingleTicker
           }
 
           return RepaintBoundary(
-            child: CustomPaint(
-              painter: ParticlePainter(particles),
-              size: size,
-            ),
+            child: CustomPaint(painter: ParticlePainter(particles), size: size),
           );
         },
       ),
