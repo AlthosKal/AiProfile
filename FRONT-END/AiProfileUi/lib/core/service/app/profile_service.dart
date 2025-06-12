@@ -16,20 +16,13 @@ class ProfileService {
     });
 
     final response = await _api.postApp('/auth/user/image/add', {formData});
+    final json = response.data;
+    final apiResponse = ApiResponse<ImageDTO>.fromJson(
+      json,
+      (data) => ImageDTO.fromJson(data),
+    );
 
-    if (response.statusCode == 200) {
-      final json = response.data;
-      final apiResponse = ApiResponse<ImageDTO>.fromJson(
-        json,
-        (data) => ImageDTO.fromJson(data),
-      );
-
-      return apiResponse.data;
-    } else {
-      throw Exception(
-        'Error al subir la imagen: código ${response.statusCode}, ${response.statusMessage}',
-      );
-    }
+    return apiResponse.data;
   }
 
   Future<ImageDTO> updateProfileImage(File imageFile) async {
@@ -38,45 +31,28 @@ class ProfileService {
     });
 
     final response = await _api.postApp('/auth/user/image/update', {formData});
+    final json = response.data;
+    final apiResponse = ApiResponse<ImageDTO>.fromJson(
+      json,
+      (data) => ImageDTO.fromJson(data),
+    );
 
-    if (response.statusCode == 200) {
-      final json = response.data;
-      final apiResponse = ApiResponse<ImageDTO>.fromJson(
-        json,
-        (data) => ImageDTO.fromJson(data),
-      );
-
-      return apiResponse.data;
-    } else {
-      throw Exception(
-        'Error al  actualizar la imagen: código ${response.statusCode}, ${response.statusMessage}',
-      );
-    }
+    return apiResponse.data;
   }
 
   Future<UserDetailDTO> getAuthenticatedUser() async {
     final response = await _api.getApp('/auth/user/details');
 
-    if (response.statusCode == 200) {
-      final json = response.data;
-      final apiResponse = ApiResponse<UserDetailDTO>.fromJson(
-        json,
-        (data) => UserDetailDTO.fromJson(data),
-      );
+    final json = response.data;
+    final apiResponse = ApiResponse<UserDetailDTO>.fromJson(
+      json,
+      (data) => UserDetailDTO.fromJson(data),
+    );
 
-      return apiResponse.data;
-    } else {
-      throw Exception('Error al obtener los detalles del usuario');
-    }
+    return apiResponse.data;
   }
 
   Future<void> deleteProfileImage() async {
-    final response = await _api.deleteApp('/auth/user/image/delete');
-
-    if (response.statusCode != 204) {
-      throw Exception(
-        'Error al eliminar la imagen: código ${response.statusCode}, ${response.statusMessage}',
-      );
-    }
+    await _api.deleteApp('/auth/user/image/delete');
   }
 }

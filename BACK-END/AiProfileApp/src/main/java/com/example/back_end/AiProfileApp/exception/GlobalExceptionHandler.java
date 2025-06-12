@@ -1,5 +1,7 @@
 package com.example.back_end.AiProfileApp.exception;
 
+import com.example.back_end.AiProfileApp.exception.exceptions.InvalidCredentialsException;
+import com.example.back_end.AiProfileApp.exception.exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -70,4 +72,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error("Ocurrió un error inesperado", request.getRequestURI()));
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
+        log.warn("Usuario no encontrado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidCredentials(InvalidCredentialsException ex,
+            HttpServletRequest request) {
+        log.warn("Credenciales inválidas: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ex.getMessage(), request.getRequestURI()));
+    }
+
 }

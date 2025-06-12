@@ -102,7 +102,7 @@ public class TransactionController {
     public ResponseEntity<?> exportTransactionsToExcel(HttpServletResponse response) {
         transactionService.exportExcel(response);
 
-        return ResponseEntity.ok(ApiResponse.ok("Datos exportados correctamente",null, null));
+        return ResponseEntity.ok(ApiResponse.ok("Datos exportados correctamente", null, null));
     }
 
     @PostMapping("/import")

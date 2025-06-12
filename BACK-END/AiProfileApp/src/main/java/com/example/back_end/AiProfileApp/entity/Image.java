@@ -9,8 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "image", indexes = {
-        @Index(name = "idx_image_image_id", columnList = "image_id"), // Cloudinary ID
+@Table(name = "image", indexes = { @Index(name = "idx_image_image_id", columnList = "image_id"), // Cloudinary ID
         @Index(name = "idx_image_url", columnList = "image_url") // Búsquedas por URL
 })
 public class Image {

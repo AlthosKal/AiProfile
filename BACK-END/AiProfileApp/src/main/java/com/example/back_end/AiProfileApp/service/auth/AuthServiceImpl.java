@@ -1,6 +1,7 @@
 package com.example.back_end.AiProfileApp.service.auth;
 
 import com.example.back_end.AiProfileApp.dto.auth.ChangePasswordDTO;
+import com.example.back_end.AiProfileApp.dto.auth.LoginUserDTO;
 import com.example.back_end.AiProfileApp.dto.auth.NewUserDTO;
 import com.example.back_end.AiProfileApp.dto.auth.TokenResponseDTO;
 import com.example.back_end.AiProfileApp.entity.User;
@@ -60,14 +61,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public TokenResponseDTO authenticate(String nameOrEmail, String password, HttpServletResponse response) {
-        User user = Optional.ofNullable(userService.findByNameOrEmail(nameOrEmail))
+    public TokenResponseDTO authenticate(LoginUserDTO dto, HttpServletResponse response) {
+        User user = Optional.ofNullable(userService.findByNameOrEmail(dto.nameOrEmail))
                 .orElseThrow(() -> new UserNotFoundException("Cuenta no encontrada. Verifica tu usuario o correo"));
 
         try {
             String emailForAuth = user.getEmail();
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    emailForAuth, password);
+                    emailForAuth, dto.password);
 
             Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authResult);
@@ -110,10 +111,6 @@ public class AuthServiceImpl implements AuthService {
             User user = userRepository.findByEmail(changePasswordDTO.getEmail())
                     .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
-            if (changePasswordDTO.getNewPassword().length() < 6) {
-                throw new WeakPasswordException("La contraseña debe tener al menos 6 caracteres");
-            }
-
             user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
             userRepository.save(user);
 
@@ -124,13 +121,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String token, HttpServletResponse response) {
-        try {
-            tokenBlacklistService.addToBlacklist(token);
-            cookieService.deleteCookie("jwt", response);
-            SecurityContextHolder.clearContext();
-        } catch (Exception e) {
-            log.error("Error durante el logout", e);
-            throw new LogoutFailedException("Error al cerrar sesión");
-        }
+        tokenBlacklistService.addToBlacklist(token);
+        cookieService.deleteCookie("jwt", response);
+        SecurityContextHolder.clearContext();
     }
 }

@@ -1,3 +1,4 @@
+import 'package:ai_profile_ui/provider/toast_helper.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/exception/global_exception_handler.dart';
@@ -29,11 +30,27 @@ class LoginController {
       password: password,
     );
 
-    await GlobalExceptionHandler.run(() async {
-      await _authService.login(dto);
-      if (context.mounted)
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
-    });
+    await GlobalExceptionHandler.run(
+      () async {
+        await _authService.login(dto);
+        if (context.mounted) {
+          ToastHelper.showSuccess(
+            context,
+            title: 'Inicio de Sesión Exitoso',
+            description: '',
+          );
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+        }
+      },
+      onError: (error) {
+        ToastHelper.showError(
+          context,
+          title: 'Error al iniciar Sesión',
+          description: error.toString(),
+        );
+        isLoading.value = false;
+      },
+    );
     isLoading.value = false;
   }
 

@@ -2,6 +2,7 @@ import 'package:ai_profile_ui/core/exception/global_exception_handler.dart';
 import 'package:ai_profile_ui/core/service/app/auth_service.dart';
 import 'package:ai_profile_ui/dto/auth/request/change_password_dto.dart';
 import 'package:ai_profile_ui/route/app_routes.dart';
+import 'package:ai_profile_ui/provider/toast_helper.dart';
 import 'package:flutter/material.dart';
 
 class ChangePasswordController {
@@ -32,8 +33,16 @@ class ChangePasswordController {
 
     await GlobalExceptionHandler.run(() async {
       await _authService.changePasswordWithCode(dto);
-      if (context.mounted) Navigator.pushReplacementNamed(context, AppRoutes.login);
-    });
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+
+        ToastHelper.showSuccess(context, title: 'Cambio de contraseña exitoso');
+      }
+    }, onError: (error){
+      ToastHelper.showError(context, title: 'Error al cambiar la contraseña', description: error.toString());
+      isLoading.value = false;
+    }
+    );
     isLoading.value = false;
   }
 

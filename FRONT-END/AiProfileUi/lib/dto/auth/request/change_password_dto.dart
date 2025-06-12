@@ -18,6 +18,6 @@ class ChangePasswordDTO {
   }
 
   Map<String, dynamic> toJson() {
-    return {'email': email,'code': code, 'newPassword': newPassword};
+    return {'email': email, 'code': code, 'newPassword': newPassword};
   }
 }

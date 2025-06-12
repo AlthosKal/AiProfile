@@ -1,6 +1,6 @@
 import 'package:ai_profile_ui/controller/login_controller.dart';
 import 'package:ai_profile_ui/widget/animated_background_scaffold.dart';
-import 'package:ai_profile_ui/widget/common/FormTitleText.dart';
+import 'package:ai_profile_ui/widget/common/form_title_text.dart';
 import 'package:ai_profile_ui/widget/common/name_or_email_form_field.dart';
 import 'package:ai_profile_ui/widget/common/password_form_field.dart';
 import 'package:flutter/material.dart';
@@ -135,8 +135,10 @@ class _LoginFormState extends State<LoginForm> {
             ),
             TextButton(
               onPressed:
-                  () =>
-                      Navigator.pushNamed(context, AppRoutes.sendVerificationCode),
+                  () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.sendVerificationCode,
+                  ),
               child: const Text.rich(
                 TextSpan(
                   text: '¿Olvidaste tu contraseña? ',

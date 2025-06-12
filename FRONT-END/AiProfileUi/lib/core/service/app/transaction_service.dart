@@ -28,29 +28,18 @@ class TransactionService {
       '/transaction',
       queryParameters: queryParams,
     );
-
-    if (response.statusCode == 200) {
-      final apiResponse = ApiResponse<List<GetTransactionDTO>>.fromJson(
-        response.data,
-        (data) =>
-            (data as List)
-                .map((item) => GetTransactionDTO.fromJson(item))
-                .toList(),
-      );
-      return apiResponse.data;
-    } else {
-      throw Exception('Error al obtener transacciones: ${response.statusCode}');
-    }
+    final apiResponse = ApiResponse<List<GetTransactionDTO>>.fromJson(
+      response.data,
+      (data) =>
+          (data as List)
+              .map((item) => GetTransactionDTO.fromJson(item))
+              .toList(),
+    );
+    return apiResponse.data;
   }
 
   Future<void> createTransaction(NewTransactionDTO dto) async {
-    final response = await _api.postApp('/transaction', dto.toJson());
-
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Error al crear la transacción: ${response.statusCode} - ${response.statusMessage}',
-      );
-    }
+    await _api.postApp('/transaction', dto.toJson());
   }
 
   Future<List<NewTransactionDTO>> createTransactions(
@@ -60,29 +49,16 @@ class TransactionService {
       '/transaction/batch',
       NewTransactionDTO.toListJson(dtoList),
     );
-
-    if (response.statusCode == 200) {
-      final apiResponse = ApiResponse<List<NewTransactionDTO>>.fromJson(
-        response.data,
-        (data) =>
-            (data as List).map((e) => NewTransactionDTO.fromJson(e)).toList(),
-      );
-      return apiResponse.data;
-    } else {
-      throw Exception(
-        'Error al crear transacciones: ${response.statusCode} - ${response.statusMessage}',
-      );
-    }
+    final apiResponse = ApiResponse<List<NewTransactionDTO>>.fromJson(
+      response.data,
+      (data) =>
+          (data as List).map((e) => NewTransactionDTO.fromJson(e)).toList(),
+    );
+    return apiResponse.data;
   }
 
   Future<void> updateTransaction(UpdateTransactionDTO dto) async {
-    final response = await _api.putApp('/transaction', dto.toJson());
-
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Error al actualizar la transacción: ${response.statusCode} - ${response.statusMessage}',
-      );
-    }
+    await _api.putApp('/transaction', dto.toJson());
   }
 
   Future<File> exportTransactionsToExcel() async {
@@ -93,14 +69,9 @@ class TransactionService {
     if (Platform.isAndroid) {
       await Permission.storage.request();
     }
+    await _api.downloadFile('/transactions/export', savePath);
 
-    final response = await _api.downloadFile('/transactions/export', savePath);
-
-    if (response.statusCode == 200) {
-      return File(savePath);
-    } else {
-      throw Exception('Error al exportar: ${response.statusCode}');
-    }
+    return File(savePath);
   }
 
   Future<void> importTransactionsFromExcel(File excelFile) async {
@@ -110,11 +81,6 @@ class TransactionService {
         filename: 'import.xlsx',
       ),
     });
-
-    final response = await _api.postApp('/transactions/import', formData);
-
-    if (response.statusCode != 200) {
-      throw Exception('Error al importar: ${response.statusCode}');
-    }
+    await _api.postApp('/transactions/import', formData);
   }
 }

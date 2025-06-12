@@ -2,6 +2,7 @@ import 'package:ai_profile_ui/core/exception/global_exception_handler.dart';
 import 'package:ai_profile_ui/core/service/app/auth_service.dart';
 import 'package:ai_profile_ui/dto/auth/request/new_user_dto.dart';
 import 'package:ai_profile_ui/route/app_routes.dart';
+import 'package:ai_profile_ui/provider/toast_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegisterController {
@@ -30,10 +31,14 @@ class RegisterController {
 
     await GlobalExceptionHandler.run(() async {
       await _authService.register(dto);
-      if (context.mounted)
+      if (context.mounted) {
         Navigator.pushReplacementNamed(context, AppRoutes.login);
+        ToastHelper.showSuccess(context, title: 'Registro de cuenta exitoso');
+      }
+    }, onError: (error) {
+      ToastHelper.showError(context, title: 'Error al registrar la cuenta', description: error.toString());
+      isLoading.value = false;
     });
-
     isLoading.value = false;
   }
 

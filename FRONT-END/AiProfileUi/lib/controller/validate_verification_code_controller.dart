@@ -4,17 +4,22 @@ import 'package:ai_profile_ui/core/exception/global_exception_handler.dart';
 import 'package:ai_profile_ui/core/service/app/auth_service.dart';
 import 'package:ai_profile_ui/dto/auth/request/validate_verification_code_dto.dart';
 import 'package:ai_profile_ui/route/app_routes.dart';
+import 'package:ai_profile_ui/provider/toast_helper.dart';
 import 'package:flutter/material.dart';
 
 class ValidateVerificationCodeController {
   final AuthService _authService;
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
-  final List<TextEditingController> codeControllers = List.generate(6, (_)=> TextEditingController());
+  final List<TextEditingController> codeControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   int currentStep = 0;
   int timerCount = 120;
   Timer? _timer;
+
   ValidateVerificationCodeController({AuthService? authService})
-      : _authService = authService ?? AuthService();
+    : _authService = authService ?? AuthService();
 
   Future<void> validateVerificationCode({
     required BuildContext context,
@@ -27,8 +32,20 @@ class ValidateVerificationCodeController {
 
     await GlobalExceptionHandler.run(() async {
       await _authService.validateVerificationCode(dto);
-      if (context.mounted) Navigator.pushReplacementNamed(context, AppRoutes.recoverPassword, arguments: email);
-    });
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.recoverPassword,
+          arguments: email,
+        );
+
+        ToastHelper.showSuccess(context, title: 'Código validado correctamente');
+      }
+    }, onError: (error){
+      ToastHelper.showError(context, title: 'Error al validar el código de verificación', description: error.toString());
+      isLoading.value = false;
+    }
+    );
     isLoading.value = false;
   }
 

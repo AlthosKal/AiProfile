@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:ai_profile_ui/route/app_routes.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -27,10 +31,20 @@ class ApiClient {
     _isInitialized = true;
   }
 
+
   void _initializeUrls() {
-    baseUrlApp = dotenv.get('AI_PROFILE_APP_URL');
-    baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL');
+    if (kIsWeb) {
+      baseUrlApp = dotenv.get('AI_PROFILE_APP_URL_WEB');
+      baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL_WEB');
+    } else if (Platform.isAndroid) {
+      baseUrlApp = dotenv.get('AI_PROFILE_APP_URL_ANDROID');
+      baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL_ANDROID');
+    }
   }
+
+
+
+
 
   Dio _createDio(String baseUrl) {
     final dio = Dio(
@@ -55,6 +69,7 @@ class ApiClient {
           // Manejo centralizado de errores
           if (e.response?.statusCode == 401) {
             // Redirigir al login
+            AppRoutes.login;
           }
           return handler.next(e);
         },

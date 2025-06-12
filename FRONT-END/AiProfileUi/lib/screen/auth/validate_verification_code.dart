@@ -1,6 +1,6 @@
 import 'package:ai_profile_ui/widget/animated_background_scaffold.dart';
-import 'package:ai_profile_ui/widget/common/FormTitleText.dart';
 import 'package:ai_profile_ui/widget/common/blurred_card.dart';
+import 'package:ai_profile_ui/widget/common/form_title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,26 +12,18 @@ import '../../widget/common/primary_button.dart';
 class ValidateCodeScreen extends StatelessWidget {
   final String email;
 
-  const ValidateCodeScreen({
-    super.key,
-    required this.email,
-  });
+  const ValidateCodeScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBackgroundScaffold(
-        child: ValidateCodeForm(email: email),
-    );
+    return AnimatedBackgroundScaffold(child: ValidateCodeForm(email: email));
   }
 }
 
 class ValidateCodeForm extends StatefulWidget {
   final String email;
 
-  const ValidateCodeForm({
-    super.key,
-    required this.email,
-  });
+  const ValidateCodeForm({super.key, required this.email});
 
   @override
   State<ValidateCodeForm> createState() => _ValidateCodeFormState();
@@ -47,8 +39,8 @@ class _ValidateCodeFormState extends State<ValidateCodeForm> {
   void initState() {
     super.initState();
     _validateController.startTimer(
-          () => setState(() {}), // onTick para actualizar UI
-          () => setState(() {}), // onFinished para actualizar UI
+      () => setState(() {}), // onTick para actualizar UI
+      () => setState(() {}), // onFinished para actualizar UI
     );
   }
 
@@ -61,15 +53,15 @@ class _ValidateCodeFormState extends State<ValidateCodeForm> {
     super.dispose();
   }
 
-  void _submitValidateCode(){
-    if(!_formKey.currentState!.validate()) return;
+  void _submitValidateCode() {
+    if (!_formKey.currentState!.validate()) return;
 
     final code = _validateController.getCodeInput();
 
     _validateController.validateVerificationCode(
-        context: context,
-        email: widget.email,
-        code: code
+      context: context,
+      email: widget.email,
+      code: code,
     );
   }
 
@@ -85,14 +77,11 @@ class _ValidateCodeFormState extends State<ValidateCodeForm> {
     if (_validateController.timerCount > 0) return;
 
     final dto = SendVerificationCodeDTO(email: widget.email);
-    await _authService.sendVerificationCode(
-        isRegistration: true,
-        dto: dto
-    );
+    await _authService.sendVerificationCode(isRegistration: true, dto: dto);
 
     _validateController.startTimer(
-          () => setState(() {}),
-          () => setState(() {}),
+      () => setState(() {}),
+      () => setState(() {}),
     );
   }
 
@@ -100,22 +89,22 @@ class _ValidateCodeFormState extends State<ValidateCodeForm> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
-    
+
     return BlurredCard(
       width: isSmallScreen ? 360.0 : 400.0,
-        child: Form(
-            key: _formKey, 
-            child: Column(
-              children: [
-                FormTitleText(text: 'Ingresa el código de 6 dígitos enviado a:'),
-                const SizedBox(height: 10),
-                FormTitleText(text: widget.email),
-                const SizedBox(height: 30),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            FormTitleText(text: 'Ingresa el código de 6 dígitos enviado a:'),
+            const SizedBox(height: 10),
+            FormTitleText(text: widget.email),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 6,
-                    (index) => Padding(
+                (index) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: SizedBox(
                     width: 40,
@@ -150,53 +139,55 @@ class _ValidateCodeFormState extends State<ValidateCodeForm> {
                 ),
               ),
             ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Código válido por: ',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      _validateController.formatTime(),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: _validateController.timerCount == 0 ? _resendCode : null,
-                  child: Text(
-                    'Reenviar código',
-                    style: TextStyle(
-                      color: _validateController.timerCount == 0
-                          ? Colors.white
-                          : Colors.white.withOpacity(0.5),
-                      fontWeight: FontWeight.bold,
-                    ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Código válido por: ',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 30),
-                ValueListenableBuilder(
-                  valueListenable: _validateController.isLoading,
-                  builder: (context, isLoading, _) {
-                    return isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : PrimaryButton(
+                Text(
+                  _validateController.formatTime(),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed:
+                  _validateController.timerCount == 0 ? _resendCode : null,
+              child: Text(
+                'Reenviar código',
+                style: TextStyle(
+                  color:
+                      _validateController.timerCount == 0
+                          ? Colors.white
+                          : Colors.white.withOpacity(0.5),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            ValueListenableBuilder(
+              valueListenable: _validateController.isLoading,
+              builder: (context, isLoading, _) {
+                return isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : PrimaryButton(
                       label: 'Verificar Código',
                       onPressed: _submitValidateCode,
                     );
-                  },
-                ),
-              ],
-            )
-        )
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

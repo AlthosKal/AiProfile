@@ -1,9 +1,9 @@
 import 'package:ai_profile_ui/controller/register_controller.dart';
 import 'package:ai_profile_ui/widget/animated_background_scaffold.dart';
-import 'package:ai_profile_ui/widget/common/FormTitleText.dart';
 import 'package:ai_profile_ui/widget/common/blurred_card.dart';
 import 'package:ai_profile_ui/widget/common/custom_form_field.dart';
 import 'package:ai_profile_ui/widget/common/email_form_field.dart';
+import 'package:ai_profile_ui/widget/common/form_title_text.dart';
 import 'package:ai_profile_ui/widget/common/password_form_field.dart';
 import 'package:ai_profile_ui/widget/common/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +105,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
                   onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
+                    FocusScope.of(
+                      context,
+                    ).requestFocus(_confirmPasswordFocusNode);
                   },
                 );
               },
@@ -118,8 +120,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   focusNode: _confirmPasswordFocusNode,
                   labelText: 'Confirmar Contraseña',
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Campo requerido';
-                    if (value != _passwordController.text) return 'Las contraseñas no coinciden';
+                    if (value == null || value.isEmpty)
+                      return 'Campo requerido';
+                    if (value != _passwordController.text)
+                      return 'Las contraseñas no coinciden';
                     return null;
                   },
                 );

@@ -12,14 +12,13 @@ import org.hibernate.annotations.Type;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "transaction"
-       , indexes = {
-        @Index(name = "idx_transaction_user_id", columnList = "user_id"), // Crucial para joins
+@Table(name = "transaction", indexes = { @Index(name = "idx_transaction_user_id", columnList = "user_id"), // Crucial
+                                                                                                           // para joins
         @Index(name = "idx_transaction_amount", columnList = "amount"), // Filtrado por monto
         @Index(name = "idx_transaction_user_amount", columnList = "user_id,amount"), // Consultas combinadas
-        @Index(name = "idx_transaction_created", columnList = "(description->>'registrationDate')") // Necesita migración manual
-}
-)
+        @Index(name = "idx_transaction_created", columnList = "(description->>'registrationDate')") // Necesita
+                                                                                                    // migración manual
+})
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

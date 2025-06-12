@@ -8,7 +8,7 @@ class FormTitleText extends StatelessWidget {
   const FormTitleText({
     super.key,
     required this.text,
-    this.fontSize = 16,
+    this.fontSize = 20,
     this.textAlign = TextAlign.center,
   });
 

@@ -1,8 +1,8 @@
 import 'package:ai_profile_ui/screen/auth/validate_verification_code.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/auth/login.dart';
 import '../screen/auth/change_password.dart';
+import '../screen/auth/login.dart';
 import '../screen/auth/register.dart';
 import '../screen/auth/send_verification_code.dart';
 import '../screen/chat/chat_ai.dart';
@@ -20,14 +20,23 @@ class RouteGenerator {
       case AppRoutes.register:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case AppRoutes.recoverPassword:
-        final email = settings.arguments as String;
-        final code = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => RecoverPasswordScreen(email: email, code: code));
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
+          builder:
+              (_) => RecoverPasswordScreen(
+                email: args['email']!,
+                code: args['code']!,
+              ),
+        );
       case AppRoutes.sendVerificationCode:
-        return MaterialPageRoute(builder: (_) => const VerificationCodeScreen());
+        return MaterialPageRoute(
+          builder: (_) => const VerificationCodeScreen(),
+        );
       case AppRoutes.validateVerificationCode:
         final email = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => ValidateCodeScreen(email: email));
+        return MaterialPageRoute(
+          builder: (_) => ValidateCodeScreen(email: email),
+        );
       case AppRoutes.home:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case AppRoutes.chat:

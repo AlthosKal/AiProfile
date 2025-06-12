@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,31 +31,35 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<TokenResponseDTO>> login(@Valid @RequestBody LoginUserDTO loginUserDTO,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        TokenResponseDTO tokenResponseDTO = authService.authenticate(loginUserDTO.getNameOrEmail(),
-                loginUserDTO.getPassword(), response);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginUserDTO loginUserDTO, HttpServletRequest request,
+            HttpServletResponse response, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Datos Invalidos", request.getRequestURI()));
+        }
+        TokenResponseDTO tokenResponseDTO = authService.authenticate(loginUserDTO, response);
 
         return ResponseEntity.ok(ApiResponse.ok("Login exitoso", tokenResponseDTO, request.getRequestURI()));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody NewUserDTO newUserDTO,
-            HttpServletRequest request) {
-
+    public ResponseEntity<?> register(@Valid @RequestBody NewUserDTO newUserDTO, HttpServletRequest request,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Datos Invalidos", request.getRequestURI()));
+        }
         authService.registerUser(newUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Registro exitoso.", null, request.getRequestURI()));
     }
 
     @PostMapping("/send-verification-code")
-    public ResponseEntity<ApiResponse<Void>> sendVerificationCode(@Valid @RequestBody SendVerificationCodeDTO dto,
+    public ResponseEntity<?> sendVerificationCode(@Valid @RequestBody SendVerificationCodeDTO dto,
             @RequestParam(defaultValue = "false") boolean isRegistration, HttpServletRequest request)
             throws IOException {
 
         sendgridService.sendVerificationEmail(dto, isRegistration);
-        return ResponseEntity.ok(ApiResponse.ok("Código de verificación enviado", null, request.getRequestURI()));
+        return ResponseEntity
+                .ok(ApiResponse.ok("Código de verificación enviado a: ", dto.getEmail(), request.getRequestURI()));
     }
 
     @PostMapping("/validate-verification-code")
@@ -97,7 +102,7 @@ public class AuthController {
 
     @PostMapping("/user/image/add")
     public ResponseEntity<ApiResponse<ImageDTO>> uploadProfileImage(@RequestParam("image") MultipartFile image,
-             HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
 
         ImageDTO imageDTO = imageService.saveImage(image, request, response);
         return new ResponseEntity<>(ApiResponse.ok("Imagen guardada", imageDTO, request.getRequestURI()),
@@ -106,7 +111,7 @@ public class AuthController {
 
     @PutMapping("/user/image/update")
     public ResponseEntity<ApiResponse<ImageDTO>> updateProfileImage(@RequestParam("image") MultipartFile image,
-             HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
 
         ImageDTO imageDTO = imageService.updateImage(image, request, response);
         return ResponseEntity.ok(ApiResponse.ok("Imagen actualizada", imageDTO, request.getRequestURI()));
