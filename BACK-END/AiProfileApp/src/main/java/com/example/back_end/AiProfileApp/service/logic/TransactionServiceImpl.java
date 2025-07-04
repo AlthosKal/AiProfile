@@ -1,11 +1,9 @@
 package com.example.back_end.AiProfileApp.service.logic;
 
-import com.example.back_end.AiProfileApp.dto.logic.GetTransactionDTO;
+import com.example.back_end.AiProfileApp.dto.logic.TransactionDTO;
 import com.example.back_end.AiProfileApp.dto.logic.NewTransactionDTO;
-import com.example.back_end.AiProfileApp.dto.logic.UpdateTransactionDTO;
 import com.example.back_end.AiProfileApp.entity.Transaction;
 import com.example.back_end.AiProfileApp.entity.User;
-import com.example.back_end.AiProfileApp.enums.TransactionType;
 import com.example.back_end.AiProfileApp.mapper.logic.GetTransactionMapper;
 import com.example.back_end.AiProfileApp.mapper.logic.NewTransactionMapper;
 import com.example.back_end.AiProfileApp.mapper.logic.UpdateTransactionMapper;
@@ -34,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final UpdateTransactionMapper updateTransactionMapper;
 
     @Override
-    public List<GetTransactionDTO> getTransactions() {
+    public List<TransactionDTO> getTransactions() {
         // Obtener el usuario autenticado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName())
@@ -57,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public UpdateTransactionDTO updateTransaction(UpdateTransactionDTO transactionDTO, String username) {
+    public TransactionDTO updateTransaction(TransactionDTO transactionDTO, String username) {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
@@ -71,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void deleteTransaction(Long id) {
+    public void deleteTransaction(Integer id) {
         transactionRepository.deleteById(id);
     }
 

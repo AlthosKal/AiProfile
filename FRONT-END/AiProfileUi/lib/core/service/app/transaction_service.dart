@@ -61,6 +61,10 @@ class TransactionService {
     await _api.putApp('/transaction', dto.toJson());
   }
 
+  Future<void> deleteTransaction(int id) async {
+    await _api.deleteApp('/transaction/$id');
+  }
+
   Future<File> exportTransactionsToExcel() async {
     final directory = await getApplicationDocumentsDirectory();
     final savePath = '${directory.path}/transacciones.xlsx';

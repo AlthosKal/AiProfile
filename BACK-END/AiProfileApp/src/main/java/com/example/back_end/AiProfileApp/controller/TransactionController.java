@@ -1,8 +1,7 @@
 package com.example.back_end.AiProfileApp.controller;
 
-import com.example.back_end.AiProfileApp.dto.logic.GetTransactionDTO;
+import com.example.back_end.AiProfileApp.dto.logic.TransactionDTO;
 import com.example.back_end.AiProfileApp.dto.logic.NewTransactionDTO;
-import com.example.back_end.AiProfileApp.dto.logic.UpdateTransactionDTO;
 import com.example.back_end.AiProfileApp.exception.ApiResponse;
 import com.example.back_end.AiProfileApp.service.logic.TransactionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ public class TransactionController {
         LOGGER.info("Received request for transactions with parameters - from: {}, to: {}, kind: {}", from, to, kind);
 
         try {
-            List<GetTransactionDTO> transactions = transactionService.getTransactions();
+            List<TransactionDTO> transactions = transactionService.getTransactions();
 
             LOGGER.info("Returning {} transactions", transactions.size());
 
@@ -75,15 +74,15 @@ public class TransactionController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateTransaction(@RequestBody UpdateTransactionDTO updateTransactionDTO,
+    public ResponseEntity<?> updateTransaction(@RequestBody TransactionDTO updateTransactionDTO,
             HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        UpdateTransactionDTO updatedTransaction = transactionService.updateTransaction(updateTransactionDTO, username);
+        TransactionDTO updatedTransaction = transactionService.updateTransaction(updateTransactionDTO, username);
 
         if (updatedTransaction == null) {
             return ResponseEntity.badRequest()
-                    .body(ApiResponse.<UpdateTransactionDTO> builder().success(false)
+                    .body(ApiResponse.<TransactionDTO> builder().success(false)
                             .message("No se encontró la transacción con el ID proporcionado")
                             .timestamp(LocalDateTime.now()).path(request.getRequestURI()).build());
         }
@@ -93,7 +92,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> deleteTransaction(@PathVariable Integer id, HttpServletRequest request) {
         transactionService.deleteTransaction(id);
         return ResponseEntity.ok(ApiResponse.ok("Transacción eliminada exitosamente", null, request.getRequestURI()));
     }

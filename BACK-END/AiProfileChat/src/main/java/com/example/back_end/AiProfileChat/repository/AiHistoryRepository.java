@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface AiHistoryRepository extends MongoRepository<ChatHistory, String> {
     List<ChatHistory> findByConversationId(String conversationId);
+    List<ChatHistory> findByUsername(String username);
+
 }

@@ -5,7 +5,6 @@
 │   ├── mvnw
 │   ├── mvnw.cmd
 │   ├── pom.xml
-│   ├── postman_collection.json
 │   ├── src
 │   │   ├── main
 │   │   │   ├── java
@@ -48,14 +47,8 @@
 │   │   │   │                   ├── exception
 │   │   │   │                   │   ├── ApiResponse.java
 │   │   │   │                   │   ├── exceptions
-│   │   │   │                   │   │   ├── DuplicateEmailException.java
-│   │   │   │                   │   │   ├── DuplicateUsernameException.java
-│   │   │   │                   │   │   ├── EmailSendingException.java
-│   │   │   │                   │   │   ├── InvalidCredentialsException.java
-│   │   │   │                   │   │   ├── InvalidEmailException.java
-│   │   │   │                   │   │   ├── LogoutFailedException.java
-│   │   │   │                   │   │   ├── UserNotFoundException.java
-│   │   │   │                   │   │   └── WeakPasswordException.java
+│   │   │   │                   │   │   ├── AuthException.java
+│   │   │   │                   │   │   └── SendgridException.java
 │   │   │   │                   │   └── GlobalExceptionHandler.java
 │   │   │   │                   ├── jwt
 │   │   │   │                   │   ├── JwtAuthenticationFilter.java
@@ -107,6 +100,8 @@
 │   │                       └── AiProfileApp
 │   │                           └── AiProfileAppApplicationTests.java
 │   └── target
+│       ├── AiProfileApp-0.0.1-SNAPSHOT.jar
+│       ├── AiProfileApp-0.0.1-SNAPSHOT.jar.original
 │       ├── classes
 │       │   ├── application.yml
 │       │   └── com
@@ -152,14 +147,8 @@
 │       │                   │   ├── ApiResponse$ApiResponseBuilder.class
 │       │                   │   ├── ApiResponse.class
 │       │                   │   ├── exceptions
-│       │                   │   │   ├── DuplicateEmailException.class
-│       │                   │   │   ├── DuplicateUsernameException.class
-│       │                   │   │   ├── EmailSendingException.class
-│       │                   │   │   ├── InvalidCredentialsException.class
-│       │                   │   │   ├── InvalidEmailException.class
-│       │                   │   │   ├── LogoutFailedException.class
-│       │                   │   │   ├── UserNotFoundException.class
-│       │                   │   │   └── WeakPasswordException.class
+│       │                   │   │   ├── AuthException.class
+│       │                   │   │   └── SendgridException.class
 │       │                   │   └── GlobalExceptionHandler.class
 │       │                   ├── jwt
 │       │                   │   ├── JwtAuthenticationFilter.class
@@ -226,10 +215,16 @@
 │       │                               └── UpdateTransactionMapperImpl.java
 │       ├── generated-test-sources
 │       │   └── test-annotations
+│       ├── maven-archiver
+│       │   └── pom.properties
 │       ├── maven-status
 │       │   └── maven-compiler-plugin
-│       │       └── compile
-│       │           └── default-compile
+│       │       ├── compile
+│       │       │   └── default-compile
+│       │       │       ├── createdFiles.lst
+│       │       │       └── inputFiles.lst
+│       │       └── testCompile
+│       │           └── default-testCompile
 │       │               ├── createdFiles.lst
 │       │               └── inputFiles.lst
 │       └── test-classes
@@ -287,10 +282,10 @@
 │   │   │   │                   │   │   └── ErrorDTO.java
 │   │   │   │                   │   └── rest
 │   │   │   │                   │       ├── AnalysisResponseDTO.java
+│   │   │   │                   │       ├── CharDataDTO.java
 │   │   │   │                   │       ├── ChatResponseDTO.java
 │   │   │   │                   │       ├── DataResponseDTO.java
-│   │   │   │                   │       ├── StringChatResponseDTO.java
-│   │   │   │                   │       └── ValueResponseDTO.java
+│   │   │   │                   │       └── StringChatResponseDTO.java
 │   │   │   │                   ├── entity
 │   │   │   │                   │   └── ChatHistory.java
 │   │   │   │                   ├── enums
@@ -370,10 +365,10 @@
 │       │   │               │   │   └── ErrorDTO.class
 │       │   │               │   └── rest
 │       │   │               │       ├── AnalysisResponseDTO.class
+│       │   │               │       ├── CharDataDTO.class
 │       │   │               │       ├── ChatResponseDTO.class
 │       │   │               │       ├── DataResponseDTO.class
-│       │   │               │       ├── StringChatResponseDTO.class
-│       │   │               │       └── ValueResponseDTO.class
+│       │   │               │       └── StringChatResponseDTO.class
 │       │   │               ├── entity
 │       │   │               │   ├── ChatHistory$ChatHistoryBuilder.class
 │       │   │               │   └── ChatHistory.class
@@ -418,6 +413,7 @@
 │                   └── default-compile
 │                       ├── createdFiles.lst
 │                       └── inputFiles.lst
-└── DOM.txt
+├── DOM.txt
+└── postman_collection.json
 
-157 directories, 264 files
+160 directories, 257 files

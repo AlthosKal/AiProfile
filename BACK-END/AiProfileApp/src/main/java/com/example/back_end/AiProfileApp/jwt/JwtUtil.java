@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -37,12 +39,21 @@ public class JwtUtil {
         // Primero intentar obtener de header Authorization (Bearer token)
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            String token = bearerToken.substring(7).trim(); // eliminamos espacios
+            log.info("JWT TOKEN RESUELTO DESDE HEADER: '" + token + "'");
+            return token;
         }
 
         // Si no está en el header, intentar obtener de cookie
         Cookie cookie = WebUtils.getCookie(request, "jwt");
-        return cookie != null ? cookie.getValue() : null;
+        if (cookie != null) {
+            String token = cookie.getValue().trim();
+            log.info("JWT TOKEN RESUELTO DESDE COOKIE: '" + token + "'");
+            return token;
+        }
+
+        log.warn("NO SE ENCONTRÓ JWT EN HEADER NI COOKIE");
+        return null;
     }
 
     public Boolean validateToken(String token, UserDetails details) {

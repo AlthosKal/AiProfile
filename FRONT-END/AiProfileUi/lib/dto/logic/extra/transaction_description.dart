@@ -16,4 +16,13 @@ class TransactionDescription {
       type: json['type'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'registrationDate': registrationDate.toIso8601String(),
+      // Convierte DateTime a String ISO
+      'type': type,
+    };
+  }
 }

@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,21 +31,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginUserDTO loginUserDTO, HttpServletRequest request,
-            HttpServletResponse response, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Datos Invalidos", request.getRequestURI()));
-        }
+            HttpServletResponse response) {
         TokenResponseDTO tokenResponseDTO = authService.authenticate(loginUserDTO, response);
 
         return ResponseEntity.ok(ApiResponse.ok("Login exitoso", tokenResponseDTO, request.getRequestURI()));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody NewUserDTO newUserDTO, HttpServletRequest request,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("Datos Invalidos", request.getRequestURI()));
-        }
+    public ResponseEntity<?> register(@Valid @RequestBody NewUserDTO newUserDTO, HttpServletRequest request) {
         authService.registerUser(newUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Registro exitoso.", null, request.getRequestURI()));
@@ -102,7 +94,7 @@ public class AuthController {
 
     @PostMapping("/user/image/add")
     public ResponseEntity<ApiResponse<ImageDTO>> uploadProfileImage(@RequestParam("image") MultipartFile image,
-            HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ImageDTO imageDTO = imageService.saveImage(image, request, response);
         return new ResponseEntity<>(ApiResponse.ok("Imagen guardada", imageDTO, request.getRequestURI()),
@@ -111,15 +103,15 @@ public class AuthController {
 
     @PutMapping("/user/image/update")
     public ResponseEntity<ApiResponse<ImageDTO>> updateProfileImage(@RequestParam("image") MultipartFile image,
-            HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ImageDTO imageDTO = imageService.updateImage(image, request, response);
         return ResponseEntity.ok(ApiResponse.ok("Imagen actualizada", imageDTO, request.getRequestURI()));
     }
 
     @DeleteMapping("/user/image/delete")
-    public ResponseEntity<Void> deleteProfileImage(@RequestHeader("Authorization") HttpServletRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<Void> deleteProfileImage(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         imageService.deleteImage(request, response);
         return ResponseEntity.noContent().build();

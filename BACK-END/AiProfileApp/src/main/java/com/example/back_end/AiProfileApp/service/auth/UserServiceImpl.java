@@ -57,12 +57,15 @@ public class UserServiceImpl implements UserService {
     public User findByNameOrEmail(String nameOrEmail) {
         boolean isEmail = nameOrEmail.contains("@");
 
-        if (isEmail) {
-            return userRepository.findByEmail(nameOrEmail)
-                    .orElseThrow(() -> new UsernameNotFoundException("Datos Invalidos"));
-        } else {
-            return userRepository.findByUsername(nameOrEmail)
-                    .orElseThrow(() -> new UsernameNotFoundException("Datos Invalidos"));
+        try {
+            if (isEmail) {
+                return userRepository.findByEmail(nameOrEmail).orElse(null);
+            } else {
+                return userRepository.findByUsername(nameOrEmail).orElse(null);
+            }
+        } catch (Exception e) {
+            log.error("Error al buscar usuario: " + e.getMessage());
+            return null;
         }
     }
 

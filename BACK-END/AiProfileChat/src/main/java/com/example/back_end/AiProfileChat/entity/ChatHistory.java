@@ -3,10 +3,8 @@ package com.example.back_end.AiProfileChat.entity;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Builder
 @Getter
@@ -21,6 +19,7 @@ public class ChatHistory {
     private String prompt;
     private String response;
     private LocalDateTime date = LocalDateTime.now();
+    private String username;
 
     public ChatHistory(String conversationId, String prompt, String response) {
         this.conversationId = conversationId;

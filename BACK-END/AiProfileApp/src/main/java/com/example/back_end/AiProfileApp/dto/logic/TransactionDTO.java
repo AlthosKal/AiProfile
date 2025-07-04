@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateTransactionDTO {
-    private Long id;
+public class TransactionDTO {
+    private Integer id;
     private TransactionDescription description;
     private Integer amount;
 }

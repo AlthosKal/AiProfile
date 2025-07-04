@@ -31,7 +31,6 @@ class ApiClient {
     _isInitialized = true;
   }
 
-
   void _initializeUrls() {
     if (kIsWeb) {
       baseUrlApp = dotenv.get('AI_PROFILE_APP_URL_WEB');
@@ -41,10 +40,6 @@ class ApiClient {
       baseUrlChat = dotenv.get('AI_PROFILE_CHAT_URL_ANDROID');
     }
   }
-
-
-
-
 
   Dio _createDio(String baseUrl) {
     final dio = Dio(

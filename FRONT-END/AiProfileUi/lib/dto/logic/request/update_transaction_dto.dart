@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import '../extra/transaction_description.dart';
 
 class UpdateTransactionDTO {
-  final Long id;
+  final int id;
   final TransactionDescription description;
   final int amount;
 

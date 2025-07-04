@@ -3,6 +3,7 @@ package com.example.back_end.AiProfileChat.controller;
 import com.example.back_end.AiProfileChat.controller.resource.ChatHistoryResource;
 import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
 import com.example.back_end.AiProfileChat.service.ChatService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,13 @@ public class ChatHistoryController implements ChatHistoryResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatHistoryController.class);
     private final ChatService chatService;
+
+    @GetMapping("/user")
+    public ResponseEntity<List<ChatHistoryDTO>> getAllUserConversations(HttpServletRequest request) {
+        List<ChatHistoryDTO> summaries = chatService.getAllConversationsOfAuthenticatedUser(request);
+        return ResponseEntity.ok(summaries);
+    }
+
 
     @GetMapping("/{conversationId}")
     @Override

@@ -1,12 +1,13 @@
 package com.example.back_end.AiProfileApp.exception;
 
-import com.example.back_end.AiProfileApp.exception.exceptions.InvalidCredentialsException;
-import com.example.back_end.AiProfileApp.exception.exceptions.UserNotFoundException;
+import com.example.back_end.AiProfileApp.exception.exceptions.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,19 +74,29 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Ocurrió un error inesperado", request.getRequestURI()));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
-        log.warn("Usuario no encontrado: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.error(ex.getMessage(), request.getRequestURI()));
-    }
-
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInvalidCredentials(InvalidCredentialsException ex,
-            HttpServletRequest request) {
-        log.warn("Credenciales inválidas: {}", ex.getMessage());
+    // Maneja AuthException (y BadCredentialsException convertida)
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthException(AuthException ex, HttpServletRequest request) {
+        log.warn("Error de autenticación: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.error(ex.getMessage(), request.getRequestURI()));
     }
 
+    // Maneja directamente BadCredentialsException de Spring Security
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadCredentials(BadCredentialsException ex,
+            HttpServletRequest request) {
+        log.warn("Intento de autenticación fallido: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error("Credenciales inválidas", request.getRequestURI()));
+    }
+
+    // Maneja UsernameNotFoundException de Spring Security
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUsernameNotFound(UsernameNotFoundException ex,
+            HttpServletRequest request) {
+        log.warn("Intento de autenticación fallido: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error("Credenciales inválidas", request.getRequestURI()));
+    }
 }

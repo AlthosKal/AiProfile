@@ -42,10 +42,7 @@ class AuthService {
   }
 
   Future<void> validateVerificationCode(ValidateVerificationCodeDTO dto) async {
-    await _api.postApp(
-      '/auth/validate-verification-code',
-      dto.toJson(),
-    );
+    await _api.postApp('/auth/validate-verification-code', dto.toJson());
   }
 
   Future<void> changePasswordWithCode(ChangePasswordDTO dto) async {

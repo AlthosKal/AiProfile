@@ -1,6 +1,5 @@
 package com.example.back_end.AiProfileApp.service.logic;
 
-import com.example.back_end.AiProfileApp.dto.logic.GetTransactionDTO;
 import com.example.back_end.AiProfileApp.dto.logic.NewTransactionDTO;
 import com.example.back_end.AiProfileApp.entity.Transaction;
 import com.example.back_end.AiProfileApp.entity.extra.TransactionDescription;

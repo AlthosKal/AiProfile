@@ -178,12 +178,6 @@
 			<version>${dotenv-java.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.sendgrid</groupId>
-			<artifactId>sendgrid-java</artifactId>
-			<version>${sendgrid-java.version}</version>
-		</dependency>
-
 		<!--API de Cloudinary-->
 		<dependency>
 			<groupId>com.cloudinary</groupId>
@@ -233,6 +227,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.sendgrid</groupId>
+			<artifactId>sendgrid-java</artifactId>
+			<version>${sendgrid-java.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
 			<version>${cloudinary.version}</version>
@@ -247,21 +247,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Forzando versiones seguras -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.5.13</version>
+		</dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.5.13</version> <!-- o la versión que prefieras unificar -->
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpmime</artifactId>
-				<version>4.5.13</version> <!-- para garantizar también la convergencia de httpmime -->
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<!-- Sección de configuración de construcción del proyecto -->
 	<build>

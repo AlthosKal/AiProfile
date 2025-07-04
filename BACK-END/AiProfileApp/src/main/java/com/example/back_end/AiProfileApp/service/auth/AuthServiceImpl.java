@@ -62,13 +62,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponseDTO authenticate(LoginUserDTO dto, HttpServletResponse response) {
-        User user = Optional.ofNullable(userService.findByNameOrEmail(dto.nameOrEmail))
-                .orElseThrow(() -> new UserNotFoundException("Cuenta no encontrada. Verifica tu usuario o correo"));
-
         try {
-            String emailForAuth = user.getEmail();
+            User user = Optional.ofNullable(userService.findByNameOrEmail(dto.nameOrEmail))
+                    .orElseThrow(() -> new AuthException("Credenciales invalidas"));
+
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    emailForAuth, dto.password);
+                    user.getEmail(), dto.password);
 
             Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authResult);
@@ -78,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
 
             return new TokenResponseDTO(jwt, user.getUsername());
         } catch (BadCredentialsException e) {
-            throw new InvalidCredentialsException("Credenciales inválidas");
+            throw new AuthException("Credenciales inválidas");
         }
     }
 
@@ -86,11 +85,11 @@ public class AuthServiceImpl implements AuthService {
     public void registerUser(NewUserDTO newUserDTO) {
         // Validaciones previas
         if (userService.existsByUserName(newUserDTO.getUsername())) {
-            throw new DuplicateUsernameException("El nombre de usuario ya existe");
+            throw new AuthException("El nombre de usuario ya existe");
         }
 
         if (userService.existsByUserEmail(newUserDTO.getEmail())) {
-            throw new DuplicateEmailException("El correo electrónico ya está registrado");
+            throw new AuthException("El correo electrónico ya está registrado");
         }
 
         log.info("Registrando nuevo usuario: {}", newUserDTO.getEmail());
@@ -109,7 +108,7 @@ public class AuthServiceImpl implements AuthService {
     public String changePasswordWithVerification(ChangePasswordDTO changePasswordDTO) {
         return transactionTemplate.execute(status -> {
             User user = userRepository.findByEmail(changePasswordDTO.getEmail())
-                    .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+                    .orElseThrow(() -> new AuthException("Usuario no encontrado"));
 
             user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
             userRepository.save(user);

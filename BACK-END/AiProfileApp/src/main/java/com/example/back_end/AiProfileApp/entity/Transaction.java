@@ -22,7 +22,7 @@ import org.hibernate.annotations.Type;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

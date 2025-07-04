@@ -1,5 +1,6 @@
 package com.example.back_end.AiProfileChat.service;
 
+import com.example.back_end.AiProfileChat.configuration.security.JwtUtil;
 import com.example.back_end.AiProfileChat.dto.request.ChatDTO;
 import com.example.back_end.AiProfileChat.dto.request.ChatFilesDTO;
 import com.example.back_end.AiProfileChat.dto.request.ChatHistoryDTO;
@@ -12,6 +13,8 @@ import com.example.back_end.AiProfileChat.exception.AiProfileException;
 import com.example.back_end.AiProfileChat.mapper.ChatHistoryMapper;
 import com.example.back_end.AiProfileChat.repository.AiHistoryRepository;
 import com.example.back_end.AiProfileChat.util.AiProfileChatUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -27,6 +30,7 @@ import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
@@ -35,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
@@ -49,6 +54,7 @@ public class ChatServiceImpl implements ChatService{
     private final ChatHistoryMapper chatHistoryMapper;
     private final FunctionCallback balanceOverTimeFunctionCallback;
     private final FunctionCallback incomesAndExpensesByPeriodFunctionCallback;
+    private final JwtUtil jwtUtil;
 
     public ChatServiceImpl(
             @Qualifier(value = "openAiChatModel") ChatModel deepseekChatClient,
@@ -56,6 +62,7 @@ public class ChatServiceImpl implements ChatService{
             AiHistoryRepository repository,
             ChatHistoryMapper chatHistoryMapper,
             FunctionCallback balanceOverTimeFunction,
+            JwtUtil jwtUtil,
             FunctionCallback incomesAndExpensesByPeriodFunction) {
 
         InMemoryChatMemory memory = new InMemoryChatMemory();
@@ -74,6 +81,7 @@ public class ChatServiceImpl implements ChatService{
                                 new MessageChatMemoryAdvisor(memory))
                         .build();
 
+        this.jwtUtil = jwtUtil;
         this.repository = repository;
         this.chatHistoryMapper = chatHistoryMapper;
         this.balanceOverTimeFunctionCallback = balanceOverTimeFunction;
@@ -142,6 +150,27 @@ public class ChatServiceImpl implements ChatService{
     public List<ChatHistoryDTO> getHistoryByConversationId(String conversationId) {
         return repository.findByConversationId(conversationId).stream()
                 .map(chatHistoryMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<ChatHistoryDTO> getAllConversationsOfAuthenticatedUser(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        String username = jwtUtil.extractEmail(token);
+
+        List<ChatHistory> allHistory = repository.findByUsername(username);
+
+        Map<String, Optional<ChatHistory>> latestByConversation = allHistory.stream()
+                .collect(Collectors.groupingBy(
+                        ChatHistory::getConversationId,
+                        Collectors.maxBy(Comparator.comparing(ChatHistory::getDate))
+                ));
+
+        return latestByConversation.values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(chatHistoryMapper::toDTO)
+                .sorted(Comparator.comparing(ChatHistoryDTO::getDate).reversed())
+                .toList();
     }
 
     private String askToAI(ChatDTO request, String fileContent) {

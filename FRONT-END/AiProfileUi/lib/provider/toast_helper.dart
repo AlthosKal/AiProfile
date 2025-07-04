@@ -3,10 +3,10 @@ import 'package:toastification/toastification.dart';
 
 class ToastHelper {
   static void showSuccess(
-      BuildContext context, {
-        required String title,
-        String? description,
-      }) {
+    BuildContext context, {
+    required String title,
+    String? description,
+  }) {
     toastification.show(
       context: context,
       type: ToastificationType.success,
@@ -23,10 +23,10 @@ class ToastHelper {
   }
 
   static void showError(
-      BuildContext context, {
-        required String title,
-        String? description,
-      }) {
+    BuildContext context, {
+    required String title,
+    String? description,
+  }) {
     toastification.show(
       context: context,
       type: ToastificationType.error,
@@ -43,5 +43,5 @@ class ToastHelper {
     );
   }
 
-// Puedes agregar más variantes: info, warning, etc.
+  // Puedes agregar más variantes: info, warning, etc.
 }

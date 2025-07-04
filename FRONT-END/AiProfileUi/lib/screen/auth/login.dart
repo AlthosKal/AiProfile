@@ -5,6 +5,8 @@ import 'package:ai_profile_ui/widget/common/name_or_email_form_field.dart';
 import 'package:ai_profile_ui/widget/common/password_form_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/constant/app_constant.dart';
+import '../../core/constant/app_theme.dart';
 import '../../route/app_routes.dart';
 import '../../widget/common/blurred_card.dart';
 import '../../widget/common/primary_button.dart';

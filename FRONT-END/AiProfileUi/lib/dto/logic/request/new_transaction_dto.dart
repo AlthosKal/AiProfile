@@ -7,7 +7,10 @@ class NewTransactionDTO {
   NewTransactionDTO({required this.description, required this.amount});
 
   Map<String, dynamic> toJson() {
-    return {'description': description, 'amount': amount};
+    return {
+      'description': description.toJson(), // ← AQUÍ ESTABA EL PROBLEMA
+      'amount': amount,
+    };
   }
 
   factory NewTransactionDTO.fromJson(Map<String, dynamic> json) {

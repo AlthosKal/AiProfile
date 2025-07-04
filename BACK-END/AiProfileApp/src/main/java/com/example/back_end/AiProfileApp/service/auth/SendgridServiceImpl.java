@@ -2,7 +2,7 @@ package com.example.back_end.AiProfileApp.service.auth;
 
 import com.example.back_end.AiProfileApp.dto.auth.SendVerificationCodeDTO;
 import com.example.back_end.AiProfileApp.dto.auth.ValidateVerificationCodeDTO;
-import com.example.back_end.AiProfileApp.exception.exceptions.InvalidEmailException;
+import com.example.back_end.AiProfileApp.exception.exceptions.SendgridException;
 import com.example.back_end.AiProfileApp.repository.UserRepository;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -49,8 +49,8 @@ public class SendgridServiceImpl implements SendgridService {
     @Override
     public void sendVerificationEmail(SendVerificationCodeDTO sendVerificationCodeDTO, boolean isRegistration) {
         String email = Optional.ofNullable(sendVerificationCodeDTO.getEmail())
-                .filter(e -> isRegistration && userRepository.existsByEmail(e)).orElseThrow(
-                        () -> new InvalidEmailException(isRegistration ? "Email no registrado" : "Email no válido"));
+                .filter(e -> isRegistration && userRepository.existsByEmail(e))
+                .orElseThrow(() -> new SendgridException(isRegistration ? "Email no registrado" : "Email no válido"));
 
         String code = generateVerificationCode();
         verificationCodes.put(email, code);
